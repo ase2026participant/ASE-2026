@@ -1,0 +1,21 @@
+{
+    "version": "1.0.0",
+    "inputs": [
+        {
+            "id": "filePath",
+            "type": "promptString",
+            "description": "Enter C file path (default: Original/tcas_v11.c)",
+            "default": "Original/tcas_v11.c"
+        },
+        {
+            "id": "filterVersion2",
+            "type": "pickString",
+            "description": "Filter to version 2 only?",
+            "options": [
+                "false",
+                "true"
+            ],
+            "default": "false"
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+
+================================================================================
+RDA Analysis Output - Generated with Nested Block Detection Fix
+Generated: 2026-02-01 20:34:35
+File: <ABS_PATH>
+================================================================================
+
+================================================================================
+SSA VERSIONS FOR IMPORTANT VARIABLES
+================================================================================
+
+Function: Own_Above_Threat
+Variable: return
+Mutant Function: Own_Above_Threat_2
+
+  Source SSA versions (1):
+    Version 1: goto_symex::return_value::Own_Above_Threat!0#1
+      Assignment: return (Other_Tracked_Alt < Own_Tracked_Alt);
+      Line:     return (Other_Tracked_Alt < Own_Tracked_Alt);
+
+  Mutant SSA versions (1):
+    Version 1: goto_symex::return_value::Own_Above_Threat_2!0#1
+      Assignment: return (Other_Tracked_Alt_2 <= Own_Tracked_Alt_2);
+      Line:     return (Other_Tracked_Alt_2 <= Own_Tracked_Alt_2);
+      Missing Statement Predicate Pair: (goto_symex::return_value::Own_Above_Threat!0#1, goto_symex::return_value::Own_Above_Threat_2!0#1)
+
+--------------------------------------------------------------------------------
+
+Function: Own_Below_Threat
+Variable: return
+Mutant Function: Own_Below_Threat_2
+
+  Source SSA versions (1):
+    Version 1: goto_symex::return_value::Own_Below_Threat!0#1
+      Assignment: return (Own_Tracked_Alt < Other_Tracked_Alt);
+      Line:     return (Own_Tracked_Alt < Other_Tracked_Alt);
+
+  Mutant SSA versions (1):
+    Version 1: goto_symex::return_value::Own_Below_Threat_2!0#1
+      Assignment: return (Own_Tracked_Alt_2 <= Other_Tracked_Alt_2);
+      Line:     return (Own_Tracked_Alt_2 <= Other_Tracked_Alt_2);
+      Missing Statement Predicate Pair: (goto_symex::return_value::Own_Below_Threat!0#1, goto_symex::return_value::Own_Below_Threat_2!0#1)
+
+--------------------------------------------------------------------------------

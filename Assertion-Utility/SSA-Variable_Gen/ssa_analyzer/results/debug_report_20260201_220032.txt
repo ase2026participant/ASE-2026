@@ -1,0 +1,975 @@
+====================================================================================================
+COMPREHENSIVE DEBUG REPORT - ALL ORIGINAL FILES
+====================================================================================================
+Generated: 2026-02-01 22:00:32
+Total files analyzed: 6
+
+====================================================================================================
+SUMMARY STATISTICS
+====================================================================================================
+Total functions found: 102
+Total function-variable pairs: 14
+Total errors: 0
+Total warnings: 0
+
+====================================================================================================
+FILE: tcas_v10.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.925058
+
+Statistics:
+  Total lines: 334
+  Functions: 17
+  Function-variable pairs: 2
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 2
+  Pair details:
+    Own_Above_Threat.return:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Own_Above_Threat_2
+    Own_Below_Threat.return:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Own_Below_Threat_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+FILE: tcas_v11.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.929273
+
+Statistics:
+  Total lines: 334
+  Functions: 17
+  Function-variable pairs: 3
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 3
+  Pair details:
+    Own_Above_Threat.return:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Own_Above_Threat_2
+    Own_Below_Threat.return:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Own_Below_Threat_2
+    alt_sep_test.if_condition_2:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 1
+      Mutant function: alt_sep_test_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+FILE: tcas_v15.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.933021
+
+Statistics:
+  Total lines: 332
+  Functions: 17
+  Function-variable pairs: 3
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 3
+  Pair details:
+    Non_Crossing_Biased_Climb.result:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Non_Crossing_Biased_Climb_2
+    Non_Crossing_Biased_Descend.result:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Non_Crossing_Biased_Descend_2
+    alt_sep_test.enabled:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: alt_sep_test_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+FILE: tcas_v31.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.937421
+
+Statistics:
+  Total lines: 336
+  Functions: 17
+  Function-variable pairs: 2
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 19
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 2
+  Pair details:
+    Non_Crossing_Biased_Climb.result:
+      Source SSA: 1
+      Mutant SSA: 2
+      Condition pairs: 0
+      Mutant function: Non_Crossing_Biased_Climb_2
+    alt_sep_test.need_upward_RA:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: alt_sep_test_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+FILE: tcas_v32.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.941207
+
+Statistics:
+  Total lines: 338
+  Functions: 17
+  Function-variable pairs: 2
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 19
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 19
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 2
+  Pair details:
+    Non_Crossing_Biased_Descend.result:
+      Source SSA: 1
+      Mutant SSA: 2
+      Condition pairs: 0
+      Mutant function: Non_Crossing_Biased_Descend_2
+    alt_sep_test.need_downward_RA:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: alt_sep_test_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+FILE: tcas_v40.c
+====================================================================================================
+Path: <ABS_PATH>
+Analyzed: 2026-02-01T22:00:32.945152
+
+Statistics:
+  Total lines: 334
+  Functions: 17
+  Function-variable pairs: 2
+
+Functions Analysis:
+  initialize:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  initialize_2:
+    Lines: 7
+    Blocks: 1
+    Block types: MAIN
+  ALIM_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Inhibit_Biased_Climb_2:
+    Lines: 4
+    Blocks: 1
+    Block types: MAIN
+  Non_Crossing_Biased_Climb_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Non_Crossing_Biased_Descend_2:
+    Lines: 17
+    Blocks: 4
+    Block types: MAIN, IF, ELSE, JOIN_POINT
+  Own_Below_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  Own_Above_Threat_2:
+    Lines: 5
+    Blocks: 1
+    Block types: MAIN
+  alt_sep_test_2:
+    Lines: 31
+    Blocks: 7
+    Has nested blocks: Yes (4 nested)
+    Block types: MAIN, IF, IF-NESTED, IF-NESTED-ELSE, IF-NESTED-ELSE-IF-0
+      ... and 2 more
+  main:
+    Lines: 56
+    Blocks: 1
+    Block types: MAIN
+
+SSA Analysis:
+  Pairs analyzed: 2
+  Pair details:
+    Non_Crossing_Biased_Climb.result:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: Non_Crossing_Biased_Climb_2
+    alt_sep_test.need_upward_RA:
+      Source SSA: 1
+      Mutant SSA: 1
+      Condition pairs: 0
+      Mutant function: alt_sep_test_2
+
+Detailed Block Analysis for alt_sep_test:
+----------------------------------------------------------------------------------------------------
+================================================================================
+Blocks in function: alt_sep_test
+================================================================================
+
+Block: MAIN
+--------------------------------------------------------------------------------
+  [  0] int alt_sep_test()
+    [  1] {
+  [  2]     bool enabled, tcas_equipped, intent_not_known;
+  [  3]     bool need_upward_RA, need_downward_RA;
+  [  4]     int alt_sep;
+  [  5] 
+  [  6]     enabled = High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF);
+  [  7]     tcas_equipped = Other_Capability == TCAS_TA;
+  [  8]     intent_not_known = Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT;
+  [  9]     
+  [ 10]     alt_sep = UNRESOLVED;
+  [ 11]     
+  [ 28]     
+
+Block: IF
+  Condition: need_upward_RA && need_downward_RA
+--------------------------------------------------------------------------------
+  [ 12]     if (enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped))
+    [ 13]     {
+  [ 14] 	need_upward_RA = Non_Crossing_Biased_Climb() && Own_Below_Threat();
+  [ 15] 	need_downward_RA = Non_Crossing_Biased_Descend() && Own_Above_Threat();
+
+Block: IF-NESTED
+--------------------------------------------------------------------------------
+  [ 16] 	if (need_upward_RA && need_downward_RA)
+  [ 17]         /* unreachable: requires Own_Below_Threat and Own_Above_Threat
+  [ 18]            to both be true - that requires Own_Tracked_Alt < Other_Tracked_Alt
+  [ 19]            and Other_Tracked_Alt < Own_Tracked_Alt, which isn't possible */
+  [ 20] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE
+--------------------------------------------------------------------------------
+  [ 25] 	else
+  [ 26] 	    alt_sep = UNRESOLVED;
+
+Block: IF-NESTED-ELSE-IF-0
+--------------------------------------------------------------------------------
+  [ 21] 	else if (need_upward_RA)
+  [ 22] 	    alt_sep = UPWARD_RA;
+
+Block: IF-NESTED-ELSE-IF-1
+--------------------------------------------------------------------------------
+  [ 23] 	else if (need_downward_RA)
+  [ 24] 	    alt_sep = DOWNWARD_RA;
+  ... (truncated)
+
+
+====================================================================================================
+ISSUES SUMMARY
+====================================================================================================
+No errors found!
+
+No warnings found!
+
+====================================================================================================
+NESTED BLOCKS ANALYSIS
+====================================================================================================
+Found 12 functions with nested blocks:
+  tcas_v10.c::alt_sep_test (4 nested blocks)
+  tcas_v10.c::alt_sep_test_2 (4 nested blocks)
+  tcas_v11.c::alt_sep_test (4 nested blocks)
+  tcas_v11.c::alt_sep_test_2 (4 nested blocks)
+  tcas_v15.c::alt_sep_test (4 nested blocks)
+  tcas_v15.c::alt_sep_test_2 (4 nested blocks)
+  tcas_v31.c::alt_sep_test (4 nested blocks)
+  tcas_v31.c::alt_sep_test_2 (4 nested blocks)
+  tcas_v32.c::alt_sep_test (4 nested blocks)
+  tcas_v32.c::alt_sep_test_2 (4 nested blocks)
+  tcas_v40.c::alt_sep_test (4 nested blocks)
+  tcas_v40.c::alt_sep_test_2 (4 nested blocks)
+
+====================================================================================================
+END OF REPORT
+====================================================================================================

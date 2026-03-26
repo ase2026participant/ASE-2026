@@ -1,0 +1,26 @@
+================================================================================
+ASSERTION GENERATION PIPELINE RESULTS
+================================================================================
+
+Total pairs: 2
+  Simple cases (direct): 0
+  Asymmetric Case 1 (1↔multiple): 2
+  Asymmetric Case 2 (multiple↔1): 0
+  RDA-compliant: 2
+  RDA-non-compliant: 0
+  Ignored: 0
+
+================================================================================
+RDA-COMPLIANT ASSERTIONS
+================================================================================
+Function: Non_Crossing_Biased_Climb, Variable: result
+  Category: asymmetric_1
+  Predicate Pair: ('Non_Crossing_Biased_Climb::1::result!0@1#2', 'Non_Crossing_Biased_Climb_2::1::result_2!0@1#3')
+  Predicate Pair: ('Non_Crossing_Biased_Climb::1::result!0@1#3', 'Non_Crossing_Biased_Climb_2::1::result_2!0@1#5')
+  Assertion: (Non_Crossing_Biased_Climb::1::result!0@1#2 ≠ Non_Crossing_Biased_Climb_2::1::result_2!0@1#3) ⇒ (final_src ≠ final_mut)
+  Assertion: (Non_Crossing_Biased_Climb::1::result!0@1#3 ≠ Non_Crossing_Biased_Climb_2::1::result_2!0@1#5) ⇒ (final_src ≠ final_mut)
+
+Function: alt_sep_test, Variable: need_upward_RA
+  Category: asymmetric_1
+  Predicate Pair: ('alt_sep_test::1::need_upward_RA!0@1#2', 'alt_sep_test_2::1::need_upward_RA_2!0@1#2')
+  Assertion: (alt_sep_test::1::need_upward_RA!0@1#2 ≠ alt_sep_test_2::1::need_upward_RA_2!0@1#2) ⇒ (final_src ≠ final_mut)

@@ -1,0 +1,22 @@
+================================================================================
+ASSERTION GENERATION PIPELINE RESULTS
+================================================================================
+
+Total pairs: 2
+  Simple cases (direct): 2
+  Asymmetric Case 1 (1↔multiple): 0
+  Asymmetric Case 2 (multiple↔1): 0
+  RDA-compliant: 0
+  RDA-non-compliant: 0
+  Ignored: 0
+
+================================================================================
+SIMPLE ASSERTIONS (Direct Generation)
+================================================================================
+Function: Own_Above_Threat, Variable: return
+  Assertion: (Own_Above_Threat::1::return!0@1#2 ≠ Own_Above_Threat_2::1::return_2!0@1#2) ⇒ (final_src ≠ final_mut)
+  Predicate Pair: ('Own_Above_Threat::1::return!0@1#2', 'Own_Above_Threat_2::1::return_2!0@1#2')
+
+Function: Own_Below_Threat, Variable: return
+  Assertion: (Own_Below_Threat::1::return!0@1#2 ≠ Own_Below_Threat_2::1::return_2!0@1#2) ⇒ (final_src ≠ final_mut)
+  Predicate Pair: ('Own_Below_Threat::1::return!0@1#2', 'Own_Below_Threat_2::1::return_2!0@1#2')
