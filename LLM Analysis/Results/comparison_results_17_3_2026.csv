@@ -1,0 +1,573 @@
+source_path,mutant_path,gemini_response,gemini_error,gemini_response_time,deepseek_response,deepseek_error,deepseek_response_time,timestamp
+<ABS_PATH>
+Line 91: The condition `s > u` is changed to `s > s` in the ternary operator, causing an incorrect calculation for the maximum value used to build the second tree.",,19.544176816940308,"Yes
+
+The mutation changes line 124 in the mutant code: `max= s > t ? (s > s? s : u) : (t > u ? t : u);` where `(s > s? s : u)` always evaluates to `u` because `s > s` is false, altering the calculation of `max` for the second tree and potentially changing the tree structure and merge output.",,5.645556926727295,2026-03-17T22:44:51.319154
+<ABS_PATH>
+Line 105: `rest=(p+q)-(min+max);` incorrectly calculates the middle value for the first tree, leading to an invalid binary search tree and different output.",,12.120375633239746,"Yes
+
+The functional difference occurs in line 93 of the mutated code where `rest=(p+q)-(min+max);` incorrectly calculates the middle value for the first binary search tree, while the original uses `rest=(p+q+r)-(min+max);`. This leads to different tree structures and thus different merged inorder output.",,3.8799517154693604,2026-03-17T22:45:18.529608
+<ABS_PATH>
+The comparison operator for merging nodes was flipped from `<` to `>` which changes the sorting order of the output.
+`91: if (current1->data > current2->data)`",,15.204799890518188,"Yes
+
+The functional difference is in the merge function's comparison condition: line 86 in the mutant changed from `if (current1->data < current2->data)` to `if (current1->data > current2->data)`, which alters the order of merging from ascending to descending.",,3.4302380084991455,2026-03-17T22:45:36.543474
+<ABS_PATH>
+Line 61: The recursive call in the `inorder` function was changed from `inorder(root->right)` to `inorder(root->left)`, causing incorrect traversal and likely infinite recursion.",,27.82301092147827,"Yes
+
+The functional difference is in the `inorder` function: line 45 in the mutant calls `inorder(root->left)` twice instead of `inorder(root->right)` for the right subtree, causing incorrect traversal and potentially infinite recursion or missing nodes.",,3.1058077812194824,2026-03-17T22:45:57.195297
+<ABS_PATH>
+The calculation for the middle value `rest` for the second tree is incorrect, using `s+t` instead of `s+t+u` (Line 124).",,12.454968690872192,"Yes
+
+The functional difference occurs in line 97 of the mutated code where `rest=(s+t)-(min+max);` incorrectly calculates the middle value for the second BST, while the original uses `rest=(s+t+u)-(min+max);` to correctly compute it from all three inputs.",,3.347015857696533,2026-03-17T22:46:30.143880
+<ABS_PATH>
+Line 76: The calculation for the minimum of the first three numbers is flawed, as `(q < r ? r : r)` will always evaluate to `r`.",,17.191457986831665,"Yes
+
+The mutation is in line 96 of the mutated code: `min= p < q ? (p < r ? p : r) : (q < r ? r : r);` where the second ternary operator incorrectly uses `r : r` instead of `q : r`, causing incorrect minimum calculation for the first tree when `p >= q` and `q < r`.",,3.85463809967041,2026-03-17T22:46:47.960907
+<ABS_PATH>
+Line 103: The mutated code sets `current1 = current1->left;` instead of `current1 = current1->right;`, which incorrectly navigates the first tree and fails to process its right subtrees during the merge.",,27.78341293334961,"Yes
+
+The functional difference occurs in the `merge` function at line 95 in the mutated code: `current1 = current1->left;` should be `current1 = current1->right;` as in the original line 95. This changes the traversal direction after printing a node, potentially causing incorrect merge order or infinite loops.",,3.5869088172912598,2026-03-17T22:47:11.025528
+<ABS_PATH>
+The mutated code incorrectly traverses to the left child instead of the right child for the second tree, which can lead to an infinite loop or incorrect output.
+Line 85: `current2 = current2->left;`",,19.068711042404175,"Yes
+
+The mutation changes `current2 = current2->right;` to `current2 = current2->left;` at line 104 in the mutant, altering the traversal direction for the right subtree when merging, which can cause incorrect output order or missing nodes.",,3.2226459980010986,2026-03-17T22:47:44.416821
+<ABS_PATH>
+In `calculate_outputm3`, a logical AND `&&` was changed to a logical OR `||`, altering the condition for execution. `if(((((input == 5) || cf==1 ) && a166 == 33) && a176 == 8))` at line 42.",,37.330010175704956,"Yes
+
+The mutation changes the condition in `calculate_outputm3` from `(input == 5) && cf==1` to `(input == 5) || cf==1` (line 73 in the mutated code). This makes the first if-statement trigger for any input when `cf==1` is true, altering the control flow and output for inputs other than 5 when `a166 == 33` and `a176 == 8`.",,5.1357810497283936,2026-03-17T22:48:08.718169
+<ABS_PATH>
+Line 41 in the mutant: `printf(""%d\n"", 221);` - The output value is changed from 21 to 221 for the specific execution path that reaches this statement.",,35.0344820022583,"Yes
+
+The functional difference occurs in `calculate_outputm1` where the original prints `21` but the mutant prints `221` (line 37 in the mutant). This changes the program's output for the specific input sequence that triggers this condition.",,3.803312063217163,2026-03-17T22:48:53.203801
+<ABS_PATH>
+Line 90: The logical AND `&&` operator was changed to a logical OR `||`, which widens the condition for the if-statement to be true.",,44.76703715324402,"Yes
+
+The mutation changes line 95 in the mutated code from `if(((a176 == 12 && ((input == 2) && cf==1 )) && a166 == 33))` to `if(((a176 == 12 || ((input == 2) && cf==1 )) && a166 == 33))`, altering the condition from requiring both `a176 == 12` and `input == 2` to requiring either `a176 == 12` or `input == 2` (along with `a166 == 33` and `cf==1`). This can cause the block to execute under different conditions, leading to different outputs for some inputs.",,6.375185966491699,2026-03-17T22:49:34.059545
+<ABS_PATH>
+In `calculate_outputm5`, a condition checking `a176 == 11` was changed to `a176 == 110`, altering the program's logic.
+`mutant.c:60: if((a176 == 110 && ((input == 5) && (a166 == 33 && cf==1 )))) {`",,14.534136056900024,"Yes
+
+The mutation changes `a176 == 11` to `a176 == 110` in the first condition of `calculate_outputm5` (line 78 in the mutant). This makes the condition always false, altering the program's behavior for input 5 when `a166 == 33` and `a176 == 11`.",,4.301309823989868,2026-03-17T22:50:27.218218
+<ABS_PATH>
+The condition `(input == 4)` in the original code is changed to `(input == 8)` at line 48 in the mutant, making a previously reachable code block unreachable.",,11.307008981704712,"Yes
+
+The mutation changes the condition in `calculate_outputm3` from `(input == 4)` to `(input == 8)` (line 73 in the mutated code). Since valid inputs are only 1, 2, 3, 4, 5, the mutated condition will never be true, causing the original transition for input 4 to be unreachable, altering the program's behavior for that specific input path.",,4.014403820037842,2026-03-17T22:50:48.070089
+<ABS_PATH>
+Line 110: `if((a166 == 32 || (((input == 4) && cf==1 ) && a52 == 8)))` changes the logical AND `&&` to OR `||`, altering the condition under which the code block executes.",,16.6095027923584,"Yes
+
+The mutation changes the condition in `calculate_outputm9` from `a166 == 32 && ...` to `a166 == 32 || ...`, making the if-statement true in more cases, which can alter the control flow and output for certain inputs when `a166 == 32` is false but the other part is true.",,3.428325891494751,2026-03-17T22:51:05.412802
+<ABS_PATH>
+Line 201: The condition `(a166 == 35)` in the if statement was changed to `(a166 != 35)`, altering the control flow.",,20.781965017318726,"Yes
+
+The mutation changes the condition in `calculate_outputm17` from `a166 == 35` to `a166 != 35` (line 200 in the mutant). This alters the behavior when `a166 == 35`, `a175 == 8`, and `input == 5`, potentially preventing the transition that sets `a166 = 32` and `a52 = 7` and prints 26.",,4.836954116821289,2026-03-17T22:51:27.469996
+<ABS_PATH>
+The condition for the block handling state `a166 == 36` is negated, causing it to execute when `a166` is not 36 and not execute when it is 36, which is the opposite of the original code's logic.
+- Mutant Line 316: `if(!(a166 == 36 && cf==1 )) {`",,53.12863111495972,"Yes
+
+The mutation changes the condition in `calculate_output` from `if((a166 == 36 && cf==1 ))` to `if(!(a166 == 36 && cf==1 ))` (line 272 in the mutant). This inverts the logic, causing the functions `calculate_outputm18`, `calculate_outputm19`, and `calculate_outputm20` to be called when `a166 != 36` (or `cf != 1`) instead of when `a166 == 36`, altering the program's behavior for many input sequences.",,5.315185785293579,2026-03-17T22:51:55.112819
+<ABS_PATH>
+Line 255 in the mutated code has a negated condition `if(!(a166 == 34 && cf==1 ))` which inverts the logic, causing the program to handle the state where `a166` is 34 incorrectly.",,38.51853013038635,"Yes
+
+The mutation changes the condition `if((a166 == 34 && cf==1 ))` to `if(!(a166 == 34 && cf==1 ))` in `calculate_output`, causing the block for `a166 == 34` to execute when `a166` is *not* 34, which alters the control flow and leads to different function calls and outputs.",,4.070094108581543,2026-03-17T22:52:55.577412
+<ABS_PATH>
+The conditional statement `(a166 == 33 && cf==1)` was negated in the `calculate_output` function, inverting the program's primary control flow.
+- Mutant Code Line: 220",,16.70372986793518,"Yes
+
+The mutation changes the condition in `calculate_output` from `if((a166 == 33 && cf==1 ))` to `if(!(a166 == 33 && cf==1 ))`, which inverts the logic for executing the first block of conditionals (lines for `a176` checks). This means the original code executes the `a176`-related functions only when `a166 == 33` and `cf == 1`, while the mutant executes them when `a166 != 33` or `cf != 1`, leading to different behavior for many input sequences.",,4.863155126571655,2026-03-17T22:53:40.188585
+<ABS_PATH>
+Line 202: The condition `(a166 == 36 && cf==1 )` in an if statement was negated to `(!(a166 == 36 && cf==1 ))`, making a previously reachable code block unreachable.",,29.785040855407715,"Yes
+
+The mutation is in `calculate_outputm19` where the condition `(a166 == 36 && cf==1)` is changed to `(!(a166 == 36 && cf==1))` at line 244 in the mutant, altering the control flow for input 1 when `a166 == 36` and `a62 == 32`.",,4.176123142242432,2026-03-17T22:54:03.770532
+<ABS_PATH>
+The condition `( cf==1 && (input == 4))` was negated to `!( cf==1 && (input == 4))` in an if statement, altering the program's behavior. at line 203.",,20.108938932418823,"Yes
+
+The mutation changes the condition in `calculate_outputm18` from `( cf==1 && (input == 4))` to `!( cf==1 && (input == 4))`, which inverts the logic for that specific branch. This means the original code executes the block when `input == 4` and `cf == 1`, but the mutated version executes it when `input != 4` or `cf != 1`, altering the program's behavior for that input.",,4.385283946990967,2026-03-17T22:54:39.749010
+<ABS_PATH>
+Line 29: The logical AND `&&` is mutated to a logical OR `||`, causing the condition to evaluate differently for certain inputs.",,23.247894048690796,"Yes
+
+The mutation changes the first condition in `calculate_outputm1` from `(cf==1 && a166 == 33) && (input == 3)` to `(cf==1 && a166 == 33) || (input == 3)`, making the condition true when `input == 3` regardless of `cf` or `a166`, altering the control flow and output for that input.",,4.212553024291992,2026-03-17T22:55:06.258594
+<ABS_PATH>
+Line 44: `if((a176 == 7 && ((input == 3) && !(a166 == 33 && cf==1 ))))` in `calculate_outputm2` negates a condition, causing a path that was previously taken for `input == 3` to become unreachable.",,19.687665939331055,"Yes
+
+The mutation changes the condition in `calculate_outputm2` from `(a166 == 33 && cf==1)` to `!(a166 == 33 && cf==1)` (line 55 in the mutated code). This alters the behavior when `a176 == 7`, `input == 3`, and the original condition holds, making the mutated version execute the block when the original condition is false, whereas the original executes it when true.",,4.0234761238098145,2026-03-17T22:55:35.741180
+<ABS_PATH>
+The value printed to standard output is changed from 21 to 213 when specific conditions are met in `calculate_outputm2`.
+`46: printf(""%d \n"", 213);`",,15.017705917358398,"Yes
+
+The functional difference occurs in `calculate_outputm2` where the mutant prints `213` (line 58) instead of `21` (line 58 in original). This changes the program's output for the specific case when `a166 == 33`, `a176 == 7`, and `input == 4`.",,3.083620071411133,2026-03-17T22:56:01.471162
+<ABS_PATH>
+A logical AND `&&` was changed to a logical OR `||`, altering the condition for execution.
+Mutated Code Line 43: `if((a166 == 33 && (((input == 2) && cf==1 ) || a176 == 6))) {`",,33.32507371902466,"Yes
+
+The mutation changes the condition in `calculate_outputm1` from `(input == 2) && cf==1` to `(input == 2) && cf==1 ) || a176 == 6`, making the second `if` statement trigger not only on input 2 but also whenever `a176 == 6` is true, regardless of input, altering control flow and output.",,4.100481748580933,2026-03-17T22:56:21.587688
+<ABS_PATH>
+The logical AND `&&` is changed to a logical OR `||` in the condition, altering the program's control flow for certain states and inputs.
+Mutant code line 169: `if((a166 == 36 || (( cf==1 && (input == 1)) && a62 == 33)))`",,16.40170907974243,"Yes
+
+The mutation changes the condition in `calculate_outputm18` from `a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)` to `a166 == 36 || (( cf==1 && (input == 1)) && a62 == 33)`, which alters the control flow and may cause the block to execute under different conditions, leading to different outputs or state changes.",,4.3467698097229,2026-03-17T22:57:01.031968
+<ABS_PATH>
+The condition `cf==1` is changed to `cf==14` in an if statement, making that code block unreachable. (Line 206)",,11.563629150390625,"Yes
+
+The mutation changes `cf==1` to `cf==14` in `calculate_outputm18` at the condition for `input == 4`, which could prevent that branch from executing when `cf` is 1, altering the program's output for that specific input path.",,3.484583854675293,2026-03-17T22:57:23.798502
+<ABS_PATH>
+The logical condition in the first if-statement of `calculate_outputm18` is negated, altering the program's control flow for specific inputs.
+`calculate_outputm18:200: if(!(a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33))) {`",,24.089219093322754,"Yes
+
+The mutation changes the first `if` condition in `calculate_outputm18` from `if((a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))` to `if(!(a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))`, which inverts the condition. This means the block executes when the original condition is false, altering the program's behavior for that specific input path.",,4.825258016586304,2026-03-17T22:57:40.864218
+<ABS_PATH>
+The logical operator in the conditional statement was changed from `==` to `!` at line 188, which alters the program's control flow.",,14.958099126815796,"Yes
+
+The mutation changes the condition `if((a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))` in `calculate_outputm18` to `if((!a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))`, which is logically equivalent to `if((a166 != 36 && ...))`. This alters the behavior when `a166 == 36`, `a62 == 33`, and `input == 1`, preventing the original transition that sets `a62 = 35` and prints `21`.",,5.437159061431885,2026-03-17T22:58:11.805295
+<ABS_PATH>
+The `if` condition in `calculate_outputm20` is negated, causing it to execute when it previously would not, and vice-versa.
+mutant line 203: `if(!(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35)) {`",,15.98208498954773,"Yes
+
+The functional difference occurs in `calculate_outputm20` where the condition `if(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35)` in the original is changed to `if(!(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))` in the mutant (line 272). This inverts the logic, causing the block to execute for inputs other than 3 when `a166 == 36` and `a62 == 35`, altering the program's behavior.",,4.932749032974243,2026-03-17T22:58:34.234099
+<ABS_PATH>
+Line 219: The conditional check `a166 == 36` was changed to `a166 == 360`, which may prevent the condition from ever being true.",,14.80853009223938,"Yes
+
+The mutation changes `a166 == 36` to `a166 == 360` in the first condition of `calculate_outputm19` (line 215 in the mutant), making that condition never true because `a166` is never set to 360 elsewhere, altering the program's behavior for that specific state and input.",,3.2616169452667236,2026-03-17T22:58:57.167468
+<ABS_PATH>
+Line 100: In `calculate_outputm6`, the logical AND `&&` is changed to `||`, causing the condition to evaluate to true more often.",,20.16002082824707,"Yes
+
+The mutation changes the condition in `calculate_outputm6` from `a176 == 12 && ((a166 == 33 && cf==1 ) && (input == 4))` to `a176 == 12 || ((a166 == 33 && cf==1 ) && (input == 4))` (line 96 in the mutant). This alters the control flow, making the first if-block execute when `a176 == 12` is true regardless of other conditions, potentially leading to different outputs and state changes.",,4.7920942306518555,2026-03-17T22:59:17.262217
+<ABS_PATH>
+Line 211: The conditional `(((input == 3) && (a166 == 36 && cf==1 )))` is negated, causing the branch to be taken when the input is not 3, contrary to the original code.",,22.595728158950806,"Yes
+
+The mutation changes the condition in `calculate_outputm20` from `if((((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))` to `if((!((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))`, which inverts the logic. This means the block executes when `a62 == 35` and the condition `(input == 3) && (a166 == 36 && cf==1 )` is false, rather than when it is true, altering the program's behavior for that specific state and input.",,5.872697830200195,2026-03-17T22:59:44.242943
+<ABS_PATH>
+Line 53: The logical AND `&&` is replaced with logical OR `||`, causing the condition `(input == 5) || cf==1` to be true for any input value as `cf` is always 1 when this function is called.",,10.63434910774231,"Yes
+
+The mutation changes the condition in `calculate_outputm3` from `(input == 5) && cf==1` to `(input == 5) || cf==1` (line 73 in the mutated code). This makes the condition true for any input when `cf==1` is true, altering the control flow and potentially causing different outputs for inputs other than 5 when `a166 == 33` and `a176 == 8`.",,4.13651704788208,2026-03-17T23:00:14.734839
+<ABS_PATH>
+The value printed to stdout is changed from 21 to 221 on line 27.",,18.70370316505432,"Yes
+
+The functional difference occurs in `calculate_outputm1` where the original prints `21` but the mutant prints `221` (line 45 in mutant). This changes the output value for that specific execution path.",,2.4391329288482666,2026-03-17T23:00:31.526640
+<ABS_PATH>
+Line 71 in `calculate_outputm6`: `&&` is changed to `||`, altering the logic and causing different branches to be taken under certain conditions.",,26.941495180130005,"Yes
+
+The mutation changes the condition in `calculate_outputm6` from `(a176 == 12 && ((input == 2) && cf==1 ))` to `(a176 == 12 || ((input == 2) && cf==1 ))`, which can cause the block to execute under different conditions, altering the program's behavior.",,3.9345662593841553,2026-03-17T23:00:54.697677
+<ABS_PATH>
+The conditional check `a176 == 11` was changed to `a176 == 110`, altering the program's control flow. Mutant Line: 59",,13.714667081832886,"Yes
+
+The mutation changes `a176 == 11` to `a176 == 110` in the first condition of `calculate_outputm5` (line 78 in the mutant). This makes the condition always false, altering the program's behavior for input 5 when `a166 == 33` and `a176 == 11`.",,3.3575689792633057,2026-03-17T23:01:27.596572
+<ABS_PATH>
+Line 56: The condition `(input == 4)` is changed to `(input == 8)`, which alters the program's behavior for the input value 4.",,9.572491884231567,"Yes
+
+The mutation changes the condition in `calculate_outputm3` from `(input == 4)` to `(input == 8)` (line 73 in the mutated code). Since valid inputs are only 1, 2, 3, 4, 5, the mutated condition will never be true, causing the original transition for input 4 to be missed, potentially altering the program's output and state.",,4.188582181930542,2026-03-17T23:01:46.699635
+<ABS_PATH>
+The logical AND operator `&&` was replaced with a logical OR `||`, altering the execution condition in line 105.",,18.281333923339844,"Yes
+
+The mutation changes the condition in `calculate_outputm9` from `a166 == 32 && ...` to `a166 == 32 || ...` (line 9 in the mutated function), making the if-statement true in more cases, which can lead to different state transitions and outputs for certain inputs when `a166 == 32` is false but the other part is true.",,4.0038368701934814,2026-03-17T23:02:02.483835
+<ABS_PATH>
+The conditional check `a166 == 35` was changed to `a166 != 35` on line 179.",,15.135387182235718,"Yes
+
+The mutation changes the condition in `calculate_outputm17` from `a166 == 35` to `a166 != 35` (line 217 in the mutant). This alters the behavior when `a166 == 35`, `a175 == 8`, and `input == 5`, making the original code execute the block (setting `a166 = 32` and `a52 = 7`, printing 26) while the mutant does not, leading to a functional difference.",,4.31694221496582,2026-03-17T23:02:26.794298
+<ABS_PATH>
+The conditional logic for executing a block of code was inverted, causing it to run when `a166` is not 36, whereas it should only run when `a166` is 36.
+Mutant line 301: `if(!(a166 == 36 && cf==1 ))`",,29.420701026916504,"Yes
+
+The mutation changes the condition in `calculate_output` from `if((a166 == 36 && cf==1 ))` to `if(!(a166 == 36 && cf==1 ))` (line 263 in the mutant). This inverts the logic, causing the functions `calculate_outputm18`, `calculate_outputm19`, and `calculate_outputm20` to be called when `a166 != 36` (or `cf != 1`), instead of when `a166 == 36`. This fundamentally alters the program's control flow and output behavior.",,4.915088176727295,2026-03-17T23:02:48.277066
+<ABS_PATH>
+The condition `if((a166 == 34 && cf==1 ))` in the original code is negated to `if(!(a166 == 34 && cf==1 ))` in the mutant at line 239.",,18.92816472053528,"Yes
+
+The mutation changes the condition `if((a166 == 34 && cf==1 ))` to `if(!(a166 == 34 && cf==1 ))` in the `calculate_output` function, which inverts the logic for executing the `a166 == 34` block. This means the functions `calculate_outputm11`, `calculate_outputm12`, `calculate_outputm13`, and `calculate_outputm14` will be called when `a166` is **not** 34 (and `cf` is 1), instead of when `a166` is 34, altering the program's behavior for states where `a166` is not 34 and `cf` is 1.",,5.9740331172943115,2026-03-17T23:03:24.642287
+<ABS_PATH>
+The condition `if((a166 == 33 && cf==1 ))` is negated to `if(!(a166 == 33 && cf==1 ))`, inverting the logic for entering a major block of functionality.
+`191: if(!(a166 == 33 && cf==1 )) {`",,12.726676940917969,"Yes
+
+The mutation changes the condition in `calculate_output` from `if((a166 == 33 && cf==1 ))` to `if(!(a166 == 33 && cf==1 ))` (line 214 in the mutant). This inverts the logic, causing the first block of conditionals (for `a166 == 33`) to execute only when `a166` is **not** 33, which fundamentally alters the program's control flow and output behavior.",,4.186363220214844,2026-03-17T23:03:51.565800
+<ABS_PATH>
+Line 231: The condition `((a166 == 36 && cf==1 ) && a62 == 32)` is negated, making the conditional branch unreachable.",,17.236725091934204,"Yes
+
+The mutation is in `calculate_outputm19` where the condition `(a166 == 36 && cf==1)` is changed to `(!(a166 == 36 && cf==1))` (line 242 in the mutant). This flips the logic, making the condition true only when `cf` is not 1 or `a166` is not 36, which alters the program's behavior for that specific branch.",,4.807311058044434,2026-03-17T23:04:10.505934
+<ABS_PATH>
+A logical condition was inverted on line 215 of the mutant from `(cf == 1 && (input == 4))` to `!(cf == 1 && (input == 4))`.",,18.511757850646973,"Yes
+
+The mutation is in `calculate_outputm18` at the third `if` condition: the original has `( cf==1 && (input == 4))` while the mutant has `!( cf==1 && (input == 4))`. This changes the condition from true when `input == 4` and `cf == 1` to true when that is false, altering the control flow for that specific input.",,4.781682968139648,2026-03-17T23:04:34.565586
+<ABS_PATH>
+Line 28: The logical AND `&&` operator was changed to a logical OR `||`, causing the conditional to be true under different circumstances.",,72.00905179977417,"Yes
+
+The mutation changes the first condition in `calculate_outputm1` from `(cf==1 && a166 == 33)` to `(cf==1 && a166 == 33) || (input == 3)`, making the condition true for any input 3 regardless of `cf` or `a166`, potentially altering control flow and output.",,4.403087139129639,2026-03-17T23:04:59.883187
+<ABS_PATH>
+The logical AND `&&` in the original code is replaced by a negated logical AND `! ( ... && ... )` in the mutated code.
+Line 50: `if((a176 == 7 && ((input == 3) && !(a166 == 33 && cf==1 ))))`",,15.413826942443848,"Yes
+
+The mutation changes the condition in `calculate_outputm2` from `(a166 == 33 && cf==1)` to `!(a166 == 33 && cf==1)` (line 55 in the mutated code), which inverts the logic, potentially altering the program's behavior for input 3 when `a166 == 33` and `a176 == 7`.",,4.086645841598511,2026-03-17T23:06:18.328916
+<ABS_PATH>
+The value printed to stdout is changed from 21 to 213 for a specific execution path.
+Line 47: `printf(""%d \n"", 213);`",,11.886389970779419,"Yes
+
+The functional difference occurs in `calculate_outputm2` where the mutant prints `213` (line 55) instead of `21` (line 54 in original). This changes the program's output for the specific case when `a166 == 33`, `a176 == 7`, and `input == 4`.",,3.8899641036987305,2026-03-17T23:06:39.860479
+<ABS_PATH>
+Line 38 in the mutant: The logical operator `&&` was replaced with `||`, which alters the condition and the program's control flow.",,24.394179105758667,"Yes
+
+The mutation changes the condition in `calculate_outputm1` from `(input == 2) && cf==1` to `(input == 2) && cf==1 ) || a176 == 6`, which can trigger the block when `a176 == 6` is true regardless of `input`, altering the control flow and output for certain inputs.",,4.387271881103516,2026-03-17T23:06:57.665543
+<ABS_PATH>
+Line 232 in `calculate_outputm18`: The logical operator `&&` is changed to `||`, causing the condition to be true for any input when `a166` is 36.",,19.97701406478882,"Yes
+
+The mutation changes the condition in `calculate_outputm18` from `a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)` to `a166 == 36 || (( cf==1 && (input == 1)) && a62 == 33)`, making the first if statement true whenever `a166 == 36` is true, regardless of other conditions, which alters the control flow and output for certain inputs.",,4.725666046142578,2026-03-17T23:07:28.472683
+<ABS_PATH>
+A conditional check `cf==1` was changed to `cf==14` in the mutant, making an `if` block unreachable.
+`212: if(((a62 == 33 && ( cf==14 && (input == 4))) && a166 == 36))`",,20.13656497001648,"Yes
+
+The mutation changes `cf==1` to `cf==14` in `calculate_outputm18` at the condition for `(input == 4)`, which will prevent that branch from executing under normal conditions since `cf` is set to 1 before each input processing, altering the program's control flow and output for that specific path.",,4.63499116897583,2026-03-17T23:07:55.190626
+<ABS_PATH>
+The `if` condition at line 204 in `calculate_outputm18` is negated, causing the code block to execute under the opposite conditions as the original.",,27.598639249801636,"Yes
+
+The mutation changes the first `if` condition in `calculate_outputm18` from `if((a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))` to `if(!(a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))`, which inverts the condition. This means the block executes when the original condition is false, altering the program's behavior for input 1 when `a166 == 36` and `a62 == 33`.",,5.644260883331299,2026-03-17T23:08:21.985981
+<ABS_PATH>
+In `calculate_outputm18`, the condition `a166 == 36` was mutated to `!a166 == 36` which is always false, preventing the code block from ever executing.
+```c
+181: if((!a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33))) {
+```",,31.648879766464233,"Yes
+
+The mutation changes the condition `if((a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))` in `calculate_outputm18` to `if((!a166 == 36 && (( cf==1 && (input == 1)) && a62 == 33)))`, which is logically equivalent to `if((a166 != 36 && ...))`. This alters the control flow for the case where `a166 == 36`, `a62 == 33`, and `input == 1`, preventing the original assignment `a62 = 35` and output `21`.",,6.393832206726074,2026-03-17T23:08:57.255739
+<ABS_PATH>
+The logical NOT operator `!` inverts the condition of an `if` statement, changing when its body executes.
+Mutant code at line 219: `if(!(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))`",,44.27434968948364,"Yes
+
+The functional difference occurs in `calculate_outputm20` where the condition `if(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35)` in the original is changed to `if(!(((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))` in the mutant (line 272). This inverts the logic, causing the block to execute for inputs other than 3 when `a166 == 36` and `a62 == 35`, altering the program's output behavior.",,6.059661149978638,2026-03-17T23:09:37.317807
+<ABS_PATH>
+In function `calculate_outputm19`, the condition `a166 == 36` was changed to `a166 == 360`, making the branch unreachable. Line: 243",,49.50848579406738,"Yes
+
+The mutation changes `a166 == 36` to `a166 == 360` in the first condition of `calculate_outputm19` (line 215 in the mutant), making that condition never true because `a166` is never set to 360 elsewhere, altering the program's behavior for that specific state and input.",,3.5271029472351074,2026-03-17T23:10:29.681876
+<ABS_PATH>
+Line 96: The logical AND `&&` operator in an `if` condition was replaced with a logical OR `||`, altering the execution path.",,47.29100680351257,"Yes
+
+The mutation changes the condition in `calculate_outputm6` from `a176 == 12 && ((a166 == 33 && cf==1 ) && (input == 4))` to `a176 == 12 || ((a166 == 33 && cf==1 ) && (input == 4))` (line 96 in the mutant). This alters the control flow, making the first if-block execute whenever `a176 == 12` is true, regardless of other conditions, which can lead to different outputs and state transitions.",,5.028979063034058,2026-03-17T23:11:24.739916
+<ABS_PATH>
+The conditional for the if statement on line 231 has been negated, altering the program's control flow. `if((!((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))`",,26.94275712966919,"Yes
+
+The mutation changes the condition in `calculate_outputm20` from `if((((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))` to `if((!((input == 3) && (a166 == 36 && cf==1 )) && a62 == 35))`, which inverts the logic for that branch, potentially altering the program's output for specific inputs.",,5.0266478061676025,2026-03-17T23:12:19.084892
+<ABS_PATH>
+The `switch` statement in `offsetDays` now uses `m` instead of `m - 1`, leading to an incorrect calculation of the day-of-the-year offset for all months.
+`37: switch (m )`",,11.478434801101685,"Yes
+
+The functional difference is in the `offsetDays` function: the original uses `switch (m - 1)` (line 33) while the mutant uses `switch (m)` (line 33), causing incorrect day offsets for all months except January.",,3.06133770942688,2026-03-17T23:12:53.085727
+<ABS_PATH>
+The `isLeap` function in the mutated code always returns 0, incorrectly identifying all years as non-leap years.
+`isLeap(int y) { if (y%100 != 0 && y%4 == 0 || y %400 == 0) return 0;` at line 6",,12.124551057815552,"Yes
+
+The mutation changes `isLeap` to always return 0 (line 9 in mutant), making leap year detection fail, which affects date validation for February 29 and day offset calculations for dates after February in leap years.",,2.754577875137329,2026-03-17T23:13:09.641756
+<ABS_PATH>
+The number of days for January is incorrectly initialized to 30 instead of 31 in the `revoffsetDays` function.
+Line 71: `int month[13] = { 0, 30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };`",,9.158536911010742,"Yes
+
+The mutation changes the month array in `revoffsetDays` at line 1 (index 0) from 0 to 30, causing incorrect day-of-year to date conversion for any offset, leading to wrong results when adding days.",,3.531412363052368,2026-03-17T23:13:26.536253
+<ABS_PATH>
+The number of days in February for a leap year is incorrectly set to 30 instead of 29.
+`revoffsetDays` at line 67: `if (isLeap(y)) month[2] = 30;`",,11.35532522201538,"Yes
+
+The mutation changes line 64 in the mutant code: `month[2] = 30;` instead of `month[2] = 29;` for leap years, causing incorrect day-to-month conversion for leap years in `revoffsetDays`.",,3.0982470512390137,2026-03-17T23:13:41.243693
+<ABS_PATH>
+The number of days for January is incorrectly set to 30 instead of 31 in the `offsetDays` function's switch statement.
+Line 44: `case 1: offset += 30;`",,15.045565843582153,"Yes
+
+The mutation changes line 45 in the `offsetDays` function: `case 1: offset += 30;` (mutant) instead of `case 1: offset += 31;` (original), causing incorrect day-of-year calculations for dates in or after February.",,3.3799898624420166,2026-03-17T23:13:57.715538
+<ABS_PATH>
+The calculation for remaining days in a non-leap year is incorrect.
+`mutant.c, line 62: remDays=365-offset1+1;`",,14.673182010650635,"Yes
+
+The functional difference is in line 73 of the mutated code where `remDays=365-offset1+1;` adds an extra day compared to the original's `remDays=365-offset1;`, causing incorrect date calculations when adding days that cross year boundaries for non-leap years.",,3.6416819095611572,2026-03-17T23:14:18.158862
+<ABS_PATH>
+The logic for calculating the new date when it crosses into the next year is flawed due to an operator change from `-=` to `+=`.
+`addDays:69: x += remDays;`",,17.280822038650513,"Yes
+
+The functional difference is in line 78 of the mutated code where `x += remDays;` is used instead of `x -= remDays;` in the original, causing incorrect day addition when crossing into a new year.",,2.686293125152588,2026-03-17T23:14:38.492431
+<ABS_PATH>
+The mutant subtracts days instead of adding them when the resulting date is in the same year. `offset2 = offset1 - x;` (line 79)",,8.88310194015503,"Yes
+
+The functional difference is in line 78 of the mutated code where `offset2 = offset1 - x;` should be `offset2 = offset1 + x;` as in the original code line 78, causing incorrect date calculations when adding days within the same year.",,3.3733959197998047,2026-03-17T23:15:00.475974
+<ABS_PATH>
+The `isLeap` function in the mutated code will always return 1, incorrectly identifying every year as a leap year.
+`isLeap` at line 12.",,14.773314714431763,"Yes
+
+The mutation changes `isLeap` to always return 1 (line 9 in mutant), making every year incorrectly considered a leap year, which affects date validation and day calculations.",,3.0321311950683594,2026-03-17T23:15:14.747277
+<ABS_PATH>
+The mutated `isValidDate` function now incorrectly invalidates dates for months with 31 days (January, March, May, etc.).
+Line 28: `return 0;`",,16.397417783737183,"Yes
+
+The functional difference is in the `isValidDate` function: the original returns 1 for valid months 1, 3, 5, 7, 8, 10, 12 (line 28), but the mutant returns 0 for those months (line 28).",,3.483099937438965,2026-03-17T23:15:34.566992
+<ABS_PATH>
+Line 23: The condition for validating the day in February for a non-leap year is negated, causing it to incorrectly reject valid dates.",,13.343102931976318,"Yes
+
+The functional difference is in the `isValidDate` function for non-leap year February dates: original returns `(d <= 28)` (line 24), mutant returns `!(d <= 28)` (line 24), which incorrectly validates dates only when `d > 28`.",,3.493765354156494,2026-03-17T23:15:56.466708
+<ABS_PATH>
+The logical OR `||` was changed to a logical AND `&&`, causing the day validation to always fail.
+`if (d < 1 && d > 31) return 0;` (Line: 21)",,21.869283199310303,"Yes
+
+The functional difference is in the `isValidDate` function: line 13 in the mutant changed `if (d < 1 || d > 31)` to `if (d < 1 && d > 31)`, which incorrectly validates dates where `d` is between 1 and 31 inclusive.",,3.74096417427063,2026-03-17T23:16:15.324688
+<ABS_PATH> The offset calculation in revoffsetDays is incorrect due to an addition instead of a subtraction in line 70: `offset = offset + month[i];`,,20.794723987579346,"Yes
+
+The functional difference is in the `revoffsetDays` function: in the mutant at line 73, `offset = offset + month[i];` should be `offset = offset - month[i];` as in the original line 73, causing incorrect day and month calculations when converting an offset back to a date.",,3.896434783935547,2026-03-17T23:16:42.951781
+<ABS_PATH>
+The loop termination condition in `revoffsetDays` is changed from `<=` to `<`, causing incorrect date calculations for the last day of any month.
+Line 66: `if (offset < month[i])`",,31.45183491706848,"Yes
+
+The functional difference is in `revoffsetDays` at line 78 in the mutant: the condition `if (offset < month[i])` uses `<` instead of `<=`, causing incorrect day calculation when `offset` equals `month[i]`.",,3.402113199234009,2026-03-17T23:17:09.653782
+<ABS_PATH>
+Line 21: The conditional `if (a == 7)` in function `g` is changed to `if (a <= 7)`, altering the output for any input `a` where `a < 7`.",,7.359066963195801,"Yes
+
+The functional difference occurs in function `g` where the condition `a == 7` (original) is mutated to `a <= 7` (mutant line 23), causing different output for values less than or equal to 7 versus exactly 7.",,2.7930657863616943,2026-03-17T23:17:46.532096
+<ABS_PATH>
+The relational operator in the `if` condition in function `f` was changed from `>` to `>=` at line 9.",,6.124205112457275,"Yes
+
+The functional difference is in the `f` function: the condition changed from `a > 13` (line 11 in original) to `a >= 13` (line 11 in mutant), causing different output when `a` equals exactly 13.",,3.5433318614959717,2026-03-17T23:17:58.701141
+<ABS_PATH>
+In function `g`, the `printf` call within the `if (a == 7)` block was changed, causing the output for an input of `a=7` to be ""not 7"" instead of ""7"".
+Mutant at line 17: `printf(""\nnot 7\n"");`",,59.30189919471741,"Yes
+
+The mutation is in function `g` at line 23: the condition `if (a == 7)` originally printed `""\n7\n""` but now prints `""\nnot 7\n""` in both branches, so when `a` is 7, the output changes from `""7""` to `""not 7""`.",,3.996572732925415,2026-03-17T23:18:10.389465
+<ABS_PATH>
+Line 22: The program now prints ""\n7\n"" instead of ""\nnot 7\n"" when 'a' is not equal to 7.",,11.590786218643188,"Yes
+
+The mutation is in function `g` at line 26: the `else` branch prints `""\n7\n""` instead of `""\nnot 7\n""`, causing it to output ""7"" for all inputs except when `a == 7`, where it also correctly prints ""7"".",,3.255692958831787,2026-03-17T23:19:15.709584
+<ABS_PATH>
+The conditional check in function `g` was changed from `a == 7` to `a == -7`.
+Mutant Line 20: `if (a == -7) {`",,10.772604942321777,"Yes
+
+The mutation changes the condition in function `g` from `a == 7` to `a == -7` (line 24 in the mutant), causing different output when `a` is 7 or -7.",,2.4420111179351807,2026-03-17T23:19:32.586375
+<ABS_PATH>
+Mutant Line 23: The function `h` will now always print ""not -4"" regardless of the input value.",,12.536918640136719,"Yes
+
+The mutation in function `h` at line 30 changes the condition for printing ""-4"" to always print ""not -4"" regardless of input, removing the correct output when `a` equals -4.",,2.591334104537964,2026-03-17T23:19:47.827604
+<ABS_PATH>
+The condition in function `i` was changed from `a == 100` to `a <= 100`, altering the output for any input `a` that is less than 100.
+Mutant code at line 30: `if (a <= 100) {`",,11.976839065551758,"Yes
+
+The functional difference is in the `i` function: in the original, it prints ""100"" only when `a == 100`; in the mutant, it prints ""100"" when `a <= 100` (line 33 in mutant).",,2.9802989959716797,2026-03-17T23:20:04.981680
+<ABS_PATH>
+The conditional check `a != 1` was changed to `a >= 1`, which alters the program's output for any input `a` where `a <= 1`.
+Mutant Line 63: `if (a >= 1) {`",,23.94192409515381,"Yes
+
+The functional difference is in the condition at the end of main: original uses `a != 1` (line 78), mutant uses `a >= 1` (line 78), causing different output for `a == 1`.",,2.5382771492004395,2026-03-17T23:20:21.965510
+<ABS_PATH>
+The output differs when `a != 1` due to a change in the `printf` statement inside the `if` block.
+Mutant, line 43: `printf(""\n1\n"");`",,12.609781980514526,"Yes
+
+The functional difference is in the last conditional block in `main`: in the original, the condition `a != 1` prints `""not 1\n""` for true and `""1\n""` for false; in the mutant, both branches print `""1\n""`.",,2.8205349445343018,2026-03-17T23:20:50.463643
+<ABS_PATH>
+Line 43: The condition `if (a != 1)` is changed to `if (a <= 1)`, which inverts the logic for all values of `a` except those less than 1.",,12.795843839645386,"Yes
+
+The functional difference is in the condition of the final if statement: original uses `a != 1` (line 73), mutant uses `a <= 1` (line 73), causing different output for `a == 1` (original prints ""1"", mutant prints ""not 1"") and `a < 1` (original prints ""not 1"", mutant prints ""not 1"" — same).",,3.66618275642395,2026-03-17T23:21:07.917172
+<ABS_PATH>
+The conditional operator in function `i` was changed from `==` to `>=` on line 31.",,16.17703104019165,"Yes
+
+The mutation changes the condition in function `i` from `a == 100` (line 33 in original) to `a >= 100` (line 33 in mutant), causing different output for any input value greater than 100.",,2.725461006164551,2026-03-17T23:21:26.406705
+<ABS_PATH>
+The function `h` in the mutated code will always print ""-4"", whereas the original prints ""not -4"" when the input is not -4, at line 24: `printf(""\n-4\n"");`",,11.721147775650024,"Yes
+
+The functional difference is in the `h` function: in the original, line 28 prints `""\nnot -4\n""` for `a != -4`, but in the mutant, line 28 prints `""\n-4\n""` for all inputs, causing incorrect output when `a` is not -4.",,3.613257884979248,2026-03-17T23:21:47.333418
+<ABS_PATH>
+Line 7 in the mutant: The conditional `if (a > 13)` was mutated to `if (a < 13)`, inverting the logic of function `f`.",,13.103370666503906,"Yes
+
+The condition in function `f` changed from `a > 13` (line 11 in original) to `a < 13` (line 11 in mutant), altering the output for values relative to 13.",,2.933976173400879,2026-03-17T23:22:04.692226
+<ABS_PATH>
+The conditional check in function `g` is changed from `a == 7` to `a >= 7` on line 16, which alters the program's output for any input value of `a` that is greater than 7.",,14.494620084762573,"Yes
+
+The mutation changes the condition in function `g` from `a == 7` (line 22 in original) to `a >= 7` (line 22 in mutant), causing different output for inputs where `a` is greater than 7 but not equal to 7.",,3.260298013687134,2026-03-17T23:22:22.753819
+<ABS_PATH>
+The output of function `f` is always ""greater than 13"" in the mutated code, regardless of the input value.
+Line 13: `printf(""\ngreater than 13\n"");`",,18.674129962921143,"Yes
+
+The functional difference is in function `f` at line 13 in the mutant: the `else` branch incorrectly prints ""greater than 13"" instead of ""not greater than 13"".",,2.1607470512390137,2026-03-17T23:22:42.534634
+<ABS_PATH>
+Line 7: The mutated code prints ""not greater than 13"" instead of ""greater than 13"" when a > 13.",,9.226283073425293,"Yes
+
+The functional difference is in the `f` function: in the original, it prints ""greater than 13"" when `a > 13` and ""not greater than 13"" otherwise; in the mutant, it always prints ""not greater than 13"" regardless of the condition.",,2.980901002883911,2026-03-17T23:23:05.397783
+<ABS_PATH>
+The mutated function `i` will always print ""not 100"", unlike the original which prints ""100"" when a is 100.
+`27: printf(""\nnot 100\n"");`",,16.369491815567017,"Yes
+
+The mutation in function `i` at line 33 changes the condition for printing ""100"" to always print ""not 100"", making the output differ when the input is 100.",,3.045841932296753,2026-03-17T23:23:19.624406
+<ABS_PATH>
+The conditional check in function h is changed from `a == -4` to `a <= -4` at line 24.",,17.460583925247192,"Yes
+
+The mutation changes the condition in function `h` from `a == -4` (line 23 in original) to `a <= -4` (line 23 in mutant), causing different output for inputs less than -4.",,2.759065866470337,2026-03-17T23:23:41.064971
+<ABS_PATH>
+The conditional check `a == 19` was changed to `a <= 19` at line 37 in the mutant code, altering the output for any input less than 19.",,10.33030390739441,"Yes
+
+The condition `if (a == 19)` in the original (line 45) is changed to `if (a <= 19)` in the mutant (line 45), causing different output for values less than or equal to 19 versus exactly 19.",,3.0707709789276123,2026-03-17T23:24:03.313342
+<ABS_PATH>
+The program's output for an input of 19 is different due to a change in the conditional statement.
+Mutant [38]: `printf(""\nnot 19\n"");`",,16.476015090942383,"Yes
+
+The functional difference occurs in the mutant code at line 45, where the condition `if (a == 19)` prints `""\nnot 19\n""` in both branches, eliminating the original behavior of printing `""\n19\n""` when `a` equals 19.",,3.1375601291656494,2026-03-17T23:24:18.738084
+<ABS_PATH>
+The mutated code prints ""\n19\n"" when the input is not 19, while the original prints ""\nnot 19\n"".
+Mutant, Line 32: `} else { printf(""\n19\n""); }`",,16.769723176956177,"Yes
+
+The functional difference occurs in the mutant code at line 45, where the else branch incorrectly prints ""19"" instead of ""not 19"", causing identical output for both conditions when `a` is not equal to 19.",,3.0266788005828857,2026-03-17T23:24:40.372797
+<ABS_PATH>
+The first conditional in `main` was changed from `a == 19` to `a >= 19`, altering the output for any input `a` greater than 19.
+Line 37: `if (a >= 19)`",,25.74086880683899,"Yes
+
+The functional difference occurs in the condition `if (a == 19)` (line 45 in original) changed to `if (a >= 19)` (line 45 in mutant), causing different output for inputs where `a > 19`.",,2.5980589389801025,2026-03-17T23:25:02.182549
+<ABS_PATH>
+The relational operator in function `h` was changed from `==` to `>=` at line 26, altering the output for any input `a` greater than -4.",,18.681521892547607,"Yes
+
+The functional difference is in the `h` function: line 28 in the mutant changes `if (a == -4)` to `if (a >= -4)`, causing different output for inputs greater than -4.",,2.6039159297943115,2026-03-17T23:25:32.544086
+<ABS_PATH>
+Line 42: In the function `i`, the else block was changed to `printf(""\n100\n"");`, causing it to always print ""100"" regardless of the input.",,27.633227825164795,"Yes
+
+The function `i` in the mutated code (line 33) always prints `""\n100\n""` regardless of the input, whereas the original prints `""\nnot 100\n""` when `a != 100`.",,2.427978277206421,2026-03-17T23:25:55.857623
+<ABS_PATH>
+In `optimize_floors`, `laststop` is assigned `i-1` instead of `i` when a new minimum cost is found, altering the function's return value.
+- Mutant Line 46: `laststop = i-1;`",,37.79621887207031,"Yes
+
+The mutation changes line 45 in the mutated code from `laststop = i;` to `laststop = i-1;`, which can cause `laststop` to be off by one, potentially returning a non-optimal or invalid floor index, affecting the final result and path reconstruction.",,2.9347598552703857,2026-03-17T23:26:27.947026
+<ABS_PATH>
+The `min` function at line 10 in the mutant always returns the second argument `b` instead of the minimum value.",,15.153343915939331,"Yes
+
+The `min` function in the mutant (line 12) always returns `b`, even when `a < b`, making it functionally different from the original which correctly returns the smaller value.",,2.7619411945343018,2026-03-17T23:27:10.704800
+<ABS_PATH>
+The total walking distance is subtracted instead of added, inverting the cost logic.
+Mutant Line 38: `nsteps -= min(stops[i]-previous, current-stops[i]);`",,17.145514011383057,"Yes
+
+The mutation changes line 55 in the mutated code from `nsteps += min(...)` to `nsteps -= min(...)`, which inverts the calculation of total walking distance, leading to negative costs and fundamentally altering the optimization behavior.",,2.716015100479126,2026-03-17T23:27:30.641170
+<ABS_PATH>
+The `min` function in the mutated code returns the negative of the first argument if it is smaller than the second, which alters the cost calculation.
+`mutant.c:11` `if (a < b) return(-a);`",,13.325277328491211,"Yes
+
+The mutation changes the `min` function to return `-a` instead of `a` when `a < b` (line 13 in mutant). This alters the calculation of walking distances in `floors_walked`, affecting all cost computations and potentially changing the optimal elevator stops.",,2.9794020652770996,2026-03-17T23:27:52.524081
+<ABS_PATH>
+The value assigned to `laststop` is decremented by one when a new minimum cost is found, which results in an incorrect floor index being returned.
+`35: laststop = i-1;`",,24.278138160705566,"Yes
+
+The mutation changes line 45 in the mutated code from `laststop = i;` to `laststop = i-1;`, which can cause `laststop` to be off by one, potentially returning an incorrect floor index and affecting subsequent operations like `reconstruct_path` and cost retrieval.",,3.5461299419403076,2026-03-17T23:28:10.858146
+<ABS_PATH>
+The `min` function was changed to always return the second argument `b` instead of the minimum of `a` and `b`.
+Code: `if (a < b) return(b);` at line 14",,14.51249885559082,"Yes
+
+The `min` function in the mutant (line 13) always returns `b` because both branches return `b`, making it incorrect for finding the minimum. This changes the calculation in `floors_walked` (line 55), affecting the cost computations and final output.",,3.1228201389312744,2026-03-17T23:28:40.705681
+<ABS_PATH>
+The operator for accumulating steps in `floors_walked` was changed from `+=` to `-=`, inverting the cost calculation.
+Line 56: `nsteps -= min(stops[i]-previous, current-stops[i]);`",,14.471256971359253,"Yes
+
+The mutation changes line 55 in the mutated code from `nsteps += min(...)` to `nsteps -= min(...)`, which inverts the calculation of total walking distance, leading to negative costs and fundamentally altering the optimization logic.",,2.7176849842071533,2026-03-17T23:29:00.366155
+<ABS_PATH>
+The `min` function incorrectly returns the negative of the first argument when it is the smaller value.
+```c
+// Mutant Line 8
+if (a < b) return(-a);
+```",,13.759191751480103,"Yes
+
+The mutation changes the `min` function to return `-a` instead of `a` when `a < b` (line 13 in mutant). This alters the calculation of walking distances in `floors_walked`, affecting all cost computations and potentially changing the optimal elevator stops.",,2.5613722801208496,2026-03-17T23:29:19.574125
+<ABS_PATH>
+The two code snippets are identical.",,30.6235830783844,"Yes
+
+The mutation changes the `min` function at line 17 in the mutant to always return `a` instead of the smaller of `a` and `b`, which will cause `floors_walked` to compute incorrect step counts, leading to different optimization results.",,3.3676867485046387,2026-03-17T23:29:37.924194
+<ABS_PATH>
+The `+=` operator was changed to `-=` in the `floors_walked` function, which inverts the calculation of `nsteps`.
+`46: nsteps -= min(stops[i]-previous, current-stops[i]);`",,10.449525833129883,"Yes
+
+The mutation changes line 55 in the mutated code from `nsteps += min(...)` to `nsteps -= min(...)`, which inverts the calculation of total walking distance, leading to negative costs and fundamentally altering the optimization logic.",,2.9656829833984375,2026-03-17T23:30:13.944961
+<ABS_PATH>
+Line 34: The condition `m[i][nstops] > m[laststop][nstops]` causes the program to find the `laststop` with the maximum cost instead of the minimum.",,12.738045930862427,"Yes
+
+The functional difference is in line 45 of the mutated code where the condition `if (m[i][nstops] < m[laststop][nstops])` is changed to `if (m[i][nstops] > m[laststop][nstops])`, causing the algorithm to select the floor with the maximum cost instead of the minimum cost.",,4.008309841156006,2026-03-17T23:30:29.380967
+<ABS_PATH>
+The relational operator in `optimize_floors` was changed, causing it to select the highest-numbered floor in case of a tie for the minimum cost, whereas the original selected the lowest.
+`optimize_floors:29: if (m[i][nstops] <= m[laststop][nstops]) laststop = i;`",,10.942445039749146,"Yes
+
+The mutation changes the condition in `optimize_floors()` from `<` to `<=` at line 48 (mutant), which can select a different `laststop` when multiple floors have the same minimal cost, potentially altering the reconstructed path even though the cost remains the same.",,3.4987740516662598,2026-03-17T23:30:48.142628
+<ABS_PATH>
+The two code snippets are functionally identical.",,8.966670751571655,"Yes
+
+The mutation changes the `min` function at line 13 in the mutant: `return(a);` instead of `return(b);` when `a >= b`. This will cause incorrect distance calculations in `floors_walked`, affecting the optimization result.",,3.468852996826172,2026-03-17T23:31:04.610360
+<ABS_PATH>
+The operator for accumulating steps in `floors_walked` was changed from `+=` to `-=`, inverting the function's return value.
+Line 45: `nsteps -= min(stops[i]-previous, current-stops[i]);`",,35.149113178253174,"Yes
+
+The mutation changes line 55 in the mutated code from `nsteps += min(...)` to `nsteps -= min(...)`, which inverts the calculation of total walking distance, leading to negative costs and fundamentally altering the optimization logic.",,3.3060388565063477,2026-03-17T23:31:19.071244
+<ABS_PATH>
+The mutant code finds the maximum cost instead of the minimum cost by changing the comparison operator from `<` to `>`.
+Line 34: `if (m[i][nstops] > m[laststop][nstops]) laststop = i;`",,8.894797086715698,"Yes
+
+The functional difference is in line 45 of the mutated code where the condition `if (m[i][nstops] < m[laststop][nstops])` is changed to `if (m[i][nstops] > m[laststop][nstops])`, causing the algorithm to select the floor with the maximum cost instead of the minimum cost.",,3.6069650650024414,2026-03-17T23:31:59.550765
+<ABS_PATH>
+The tie-breaking logic for choosing the final stop is different due to a change from `<` to `<=` in the comparison.
+- Mutated code, line 33: `if (m[i][nstops] <= m[laststop][nstops]) laststop = i;`",,10.353854894638062,"Yes
+
+The functional difference occurs in the `optimize_floors` function at line 45 in the mutant, where the condition `if (m[i][nstops] <= m[laststop][nstops])` uses `<=` instead of `<`, potentially selecting a different `laststop` when costs are equal.",,3.596369743347168,2026-03-17T23:32:14.079340
+<ABS_PATH>
+The condition in the second `while` loop was changed from `rightPointer > 0` to `rightPointer >= 0`, which can lead to an out-of-bounds array access (`intArray[-1]`).
+Mutant code at line 49: `while(rightPointer >= 0 && intArray[--rightPointer] > pivot)`",,21.81826138496399,"Yes
+
+The mutation changes the condition in the second inner while loop of the partition function from `rightPointer > 0` to `rightPointer >= 0` (line 49 in the mutant). This can cause an out-of-bounds array access when `rightPointer` becomes 0 and then is decremented to -1 before being used as an index in `intArray[--rightPointer]`.",,3.5221681594848633,2026-03-17T23:32:30.050356
+<ABS_PATH>
+The loop condition at line 70 was changed from `rightPointer > 0` to `rightPointer >= 0`, which can cause an out-of-bounds array access (`intArray[-1]`).",,21.725919008255005,"Yes
+
+The functional difference occurs in the `partition` function where the condition in the second inner while loop changes from `rightPointer > 0` (line 45 in original) to `rightPointer >= 0` (line 45 in mutant), which can cause an out-of-bounds array access when `rightPointer` becomes -1.",,3.4755029678344727,2026-03-17T23:32:57.411363
+<ABS_PATH>
+The relational operator in the partition function was changed, altering the partitioning logic for elements equal to the pivot.
+`mutant.c, line 35: while(rightPointer > 0 && intArray[--rightPointer] >= pivot)`",,60.12646818161011,"Yes
+
+The mutation changes the second inner while loop condition in `partition` from `intArray[--rightPointer] > pivot` to `intArray[--rightPointer] >= pivot` (line 55 in the mutant). This can cause different partitioning behavior when duplicate pivot values exist, potentially leading to incorrect sorting or infinite recursion.",,3.9655239582061768,2026-03-17T23:33:24.631396
+<ABS_PATH>
+The partitioning logic is altered by changing the condition from `< pivot` to `< pivot-1`, which can cause elements equal to `pivot - 1` to be incorrectly partitioned, leading to a wrong sort.
+Mutant line 56: `while(intArray[++leftPointer] < pivot-1)`",,23.248143196105957,"Yes
+
+The mutation changes the partition condition from `intArray[++leftPointer] < pivot` to `intArray[++leftPointer] < pivot-1` (line 45 in the mutant), which can cause incorrect element comparisons and alter the sorting behavior.",,2.9207558631896973,2026-03-17T23:34:30.743985
+<ABS_PATH>
+The change is a cosmetic formatting difference in a debug print statement, which does not alter the program's sorting logic or final output.",,9.667856931686401,No,,1.127593994140625,2026-03-17T23:34:58.929263
+<ABS_PATH>
+The loop termination condition in the `partition` function was changed from `>=` to `>`, which can result in an incorrect partition point and a wrongly sorted array.
+```c
+if(leftPointer > rightPointer) { // line 49
+
+```",,18.791706085205078,"Yes
+
+The mutation changes the condition in partition from `if(leftPointer >= rightPointer)` to `if(leftPointer > rightPointer)` (line 49 in mutant), which can cause different swapping behavior and potentially incorrect sorting for certain inputs.",,2.9408349990844727,2026-03-17T23:35:11.745866
+<ABS_PATH>
+Line 3: The macro `MINSEP` is changed from `300` to `650` (`300+350`), altering the logic in `Non_Crossing_Biased_Climb` and `Non_Crossing_Biased_Descend`.
+Line 74: The condition `(Cur_Vertical_Sep > MAXALTDIFF)` is removed from the assignment to the `enabled` variable.",,15.696163177490234,"Yes
+
+The mutant has two functional differences:  
+1. MINSEP changed from 300 to 650 (line 4), affecting comparisons in Non_Crossing_Biased_Climb and Non_Crossing_Biased_Descend.  
+2. Enabled condition missing `(Cur_Vertical_Sep > MAXALTDIFF)` (line 96), altering when alt_sep_test proceeds.",,4.069380044937134,2026-03-17T23:35:35.496709
+<ABS_PATH>
+The less than operator `<` is replaced with less than or equal to `<=` in two functions.
+`83: return (Own_Tracked_Alt <= Other_Tracked_Alt);`
+`87: return (Other_Tracked_Alt <= Own_Tracked_Alt);`
+The check for simultaneous upward and downward RA needs is removed.
+`100: if (need_upward_RA)`",,17.149396181106567,"Yes
+
+The functional differences are:  
+1. In `Own_Below_Threat()` and `Own_Above_Threat()`, the strict inequality (`<`) is changed to `<=` (mutant lines 78-81), altering threat detection when altitudes are equal.  
+2. In `alt_sep_test()`, the original logic handling simultaneous `need_upward_RA` and `need_downward_RA` (setting `UNRESOLVED`) is removed in the mutant (line 94), so the mutant prioritizes `UPWARD_RA` in that case.",,5.645200967788696,2026-03-17T23:35:57.276854
+<ABS_PATH>
+Line 57: An additional condition `(Own_Tracked_Alt <= Other_Tracked_Alt)` is added to the result in the `if` block of `Non_Crossing_Biased_Climb`.
+Line 60: An additional condition `(Own_Tracked_Alt < Other_Tracked_Alt)` is added to the result in the `else` block of `Non_Crossing_Biased_Climb`.
+Line 93: The condition `&& Own_Below_Threat()` is removed from the assignment of `need_upward_RA` in `alt_sep_test`.",,36.86115503311157,"Yes
+
+The mutant modifies `Non_Crossing_Biased_Climb` (lines 58-59 and 62-63) by adding contradictory conditions that can never be true, and changes `alt_sep_test` (line 94) by removing `Own_Below_Threat()` from the `need_upward_RA` assignment.",,4.312562942504883,2026-03-17T23:36:22.089516
+<ABS_PATH>
+In `Own_Below_Threat`, the operator `<` was changed to `<=`, altering the logic when altitudes are equal.
+```c
+72: bool Own_Below_Threat() { return (Own_Tracked_Alt <= Other_Tracked_Alt); }
+```
+In `Own_Above_Threat`, the operator `<` was changed to `<=`, altering the logic when altitudes are equal.
+```c
+76: bool Own_Above_Threat() { return (Other_Tracked_Alt <= Own_Tracked_Alt); }
+```",,17.33002018928528,"Yes
+
+The functional difference arises because in the mutated code, `Own_Below_Threat()` and `Own_Above_Threat()` use `<=` instead of `<`, changing the behavior when `Own_Tracked_Alt == Other_Tracked_Alt` from false to true for both functions, which can affect the outcomes of `Non_Crossing_Biased_Climb()` and `Non_Crossing_Biased_Descend()` and consequently `alt_sep_test()`.",,4.942859649658203,2026-03-17T23:37:05.283566
+<ABS_PATH>
+The logical expression in `Non_Crossing_Biased_Climb` is altered by removing the `!(Own_Below_Threat()) ||` clause.
+`result = ((Own_Below_Threat()) && (!(Down_Separation >= ALIM())));` at line 70
+The condition for `need_upward_RA` in `alt_sep_test` is changed by removing the `&& Own_Below_Threat()` check.
+`need_upward_RA = Non_Crossing_Biased_Climb();` at line 108",,20.69337821006775,"Yes
+
+The functional difference is due to two changes:  
+1. In `Non_Crossing_Biased_Climb` (line ~53 in mutant), the condition `!(Own_Below_Threat()) ||` is removed, altering the logic when `upward_preferred` is true and `Own_Below_Threat()` is false.  
+2. In `alt_sep_test` (line ~94 in mutant), `need_upward_RA` is assigned `Non_Crossing_Biased_Climb()` without the `&& Own_Below_Threat()` condition, changing when an upward RA is triggered.",,5.933730602264404,2026-03-17T23:37:29.576240
+<ABS_PATH>
+Line 77: `result = result && (Other_Tracked_Alt < Own_Tracked_Alt);` - A new condition is added which can alter the function's return value.
+Line 80: `result = result && (Other_Tracked_Alt <= Own_Tracked_Alt);` - A new condition is added which can alter the function's return value.
+Line 94: `need_downward_RA = Non_Crossing_Biased_Descend();` - The `&& Own_Above_Threat()` condition is removed from the assignment.",,21.1629741191864,"Yes
+
+The mutant modifies `Non_Crossing_Biased_Descend()` by adding extra conditions (lines 73-74 and 76-77) that alter its logic, and changes `alt_sep_test()` by removing `&& Own_Above_Threat()` from `need_downward_RA` (line 96), leading to different outputs for certain inputs.",,4.9147069454193115,2026-03-17T23:37:58.220153
