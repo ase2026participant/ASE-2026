@@ -79,6 +79,123 @@ Compare source and mutant programs for observational equivalence.
 Return structured output only.
 ```
 
+### Full Prompt Template (JSON-first masking analysis)
+
+Use this stricter prompt pair when you want machine-parseable output and explicit masking/interaction reasoning for multi-bug comparisons.
+
+System Prompt:
+
+```text
+You are an expert in program analysis and formal verification.
+
+Your task is to determine semantic (observational) equivalence between a source program and a mutant program.
+You must reason about program behavior, not just syntax.
+
+Definition:
+Two programs are observationally equivalent if, for every feasible input, their observable outputs are identical.
+
+Critical requirements:
+- Do NOT conclude non-equivalence based only on syntactic differences.
+- You MUST analyze how differences propagate through the program.
+- You MUST check whether differences are masked before reaching the output.
+- You MUST consider interaction between multiple bugs.
+
+You must explicitly reason about the following masking effects:
+1. Overwrite masking (later assignments remove divergence)
+2. Control-flow masking (divergent code not executed)
+3. Output masking (internal difference does not affect output)
+4. Interaction masking (one bug cancels or neutralizes another)
+5. Path-specific masking (difference appears only on some paths)
+
+For each identified difference:
+- Identify affected variables or predicates
+- Trace forward propagation
+- Determine whether divergence survives or is masked
+
+For multi-bug mutants:
+- Analyze combined effects, not just each bug independently
+- Check if bugs amplify, cancel, or hide each other
+
+Do NOT skip propagation analysis.
+
+Final decision rules:
+- Equivalent -> no feasible input causes output difference
+- Non-equivalent -> at least one feasible input causes output difference
+- Conditionally non-equivalent -> only some paths diverge
+- Masked divergence -> internal differences exist but do not reach output
+
+Be precise, structured, and conservative in conclusions.
+If uncertain, explicitly state limitations.
+```
+
+User Prompt:
+
+```text
+Task:
+Compare the following source program (S) and mutant program (M) for observational equivalence.
+
+Follow the required reasoning steps carefully.
+
+Steps to perform:
+1. Identify all semantic differences between S and M.
+2. For each difference:
+ - List directly affected variables or conditions
+ - Describe immediate effect
+3. Trace forward propagation:
+ - How does this difference influence later computations?
+ - Does it affect control flow?
+ - Does it reach output variables?
+4. Perform masking analysis:
+ - Is the difference overwritten later?
+ - Is it blocked by path conditions?
+ - Is it masked at output?
+5. Perform interaction analysis:
+ - Do multiple differences interact?
+ - Does one difference cancel or amplify another?
+ - Check explicitly for one-way masking (one bug/change masks or hides the effect of another).
+ - Check explicitly for two-way masking (two or more bugs/changes cancel each other so that combined behavior appears correct).
+ - IMPORTANT: If any such masking occurs, you MUST say so explicitly, and identify which bugs/changes are involved.
+6. Perform path-sensitive reasoning if needed.
+7. Determine whether any feasible input leads to different outputs.
+
+Output requirements (STRICT):
+- Return ONLY valid JSON. No markdown, no code fences, no extra text.
+- The JSON must include an upfront answer that starts with Yes/No and a one-line justification.
+- That Yes/No and one-liner MUST explicitly state whether any bug/change is masked by another bug/change.
+- The JSON must use these exact top-level keys:
+  answer, one_liner, A_observable_output_variables, B_differences_identified,
+  C_propagation_analysis, D_masking_analysis, E_interaction_analysis,
+  F_surviving_divergences_reaching_output, G_final_verdict,
+  H_witness_input_or_condition, I_confidence_and_limitations.
+
+Meaning of keys:
+- answer: Yes/No to "Are S and M observationally equivalent?"
+- one_liner: one sentence, starting with Yes/No, explicitly mentioning masking presence/absence between bugs.
+- A_observable_output_variables: list of observable output variables.
+- B_differences_identified: list of semantic differences with id, description, directly_affected, immediate_effect.
+- C_propagation_analysis: mapping from difference id to propagation details.
+- D_masking_analysis: overwrite/control_flow/output/interaction/path_specific masking.
+- E_interaction_analysis: summary of interactions between differences.
+- F_surviving_divergences_reaching_output: differences that still reach outputs.
+- G_final_verdict: one of Equivalent, Non-equivalent, Conditionally non-equivalent, Masked divergence.
+- H_witness_input_or_condition: concrete or symbolic witness for non-equivalence.
+- I_confidence_and_limitations: object with numeric confidence and textual limitations.
+
+---
+
+Source Program (S):
+{source}
+
+---
+
+Mutant Program (M):
+{mutant}
+```
+
+Usage note:
+- In notebooks, inject program text using Python f-strings exactly as `{source}` and `{mutant}` placeholders.
+- Keep temperature low (`0` to `0.2`) to improve consistency of strict JSON output.
+
 ## Example Execution: NTS
 
 ```bash
