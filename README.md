@@ -138,10 +138,10 @@ python3 -m ssa_analyzer.ssa_analyzer.cli --help
 
 ### 5) Smoke test (C + SMT2)
 
-From `Assertion-Utility/SSA-Variable_Gen`:
+Run from `Assertion-Utility/SSA-Variable_Gen` (not from repo root):
 
 ```bash
-cd ..
+cd Assertion-Utility/SSA-Variable_Gen
 ./ssa_analyzer/run_rda_smt2.sh Original/tcas_v15.c smt2_files/out.tcas_v15.smt2
 ```
 
