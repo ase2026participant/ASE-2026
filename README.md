@@ -185,7 +185,24 @@ cd tcas_v15_assertion_runs
 for f in out.tcas_v15.assert*.smt2; do
   z3 "$f" > "${f%.smt2}.result.txt"
 done
+
+# 5) Build reviewer summary (sat/unsat/unknown per assertion)
+printf "assertion_file,result\n" > masking_summary.csv
+for r in out.tcas_v15.assert*.result.txt; do
+  res=$(rg "^(sat|unsat|unknown)$" "$r" -m 1 | tr -d '\n')
+  [ -z "$res" ] && res="no-result"
+  printf "%s,%s\n" "$r" "$res" >> masking_summary.csv
+done
+
+# 6) View potential masking-bug indicators (commonly UNSAT cases)
+echo "Potential masking-bug candidates (UNSAT):"
+rg ",unsat$" masking_summary.csv || true
 ```
+
+Quick interpretation for reviewers:
+- `sat`: assertion-specific divergence is feasible under current unwind/constraints.
+- `unsat`: assertion-specific divergence is not feasible; often treated as masking-bug candidate for that assertion pair.
+- `unknown`: solver could not conclude; rerun with adjusted settings if needed.
 
 ### Step 1) Generate base SMT2 with CBMC
 
