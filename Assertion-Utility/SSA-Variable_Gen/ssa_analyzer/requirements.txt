@@ -1,3 +1,5 @@
-# No external dependencies required
-# Uses only Python standard library
+# Minimal packaging/build dependency
+setuptools>=61.0.0
+
+# Runtime analyzer logic uses Python standard library modules only.
 
