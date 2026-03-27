@@ -117,28 +117,39 @@ def classify_masking_from_solver_result(result: str) -> str:
 
 def run_z3_and_write_status(out_dir: Path, prefix: str, count: int) -> Path:
     """Run Z3 for generated variants and write bug-level status CSV."""
-    status_lines = ["bug_index,file,solver_result,masking_status"]
+    status_lines = ["bug_index,file,solver_result,masking_status,note"]
 
     for idx in range(1, count + 1):
         smt2_file = out_dir / f"{prefix}{idx}.smt2"
         result_file = out_dir / f"{prefix}{idx}.result.txt"
 
         proc = subprocess.run(
-            ["z3", str(smt2_file)],
+            ["z3", "-smt2", str(smt2_file)],
             text=True,
             capture_output=True,
             check=False,
         )
 
-        output_text = (proc.stdout or "").strip()
-        result_file.write_text(output_text + ("\n" if output_text else ""), encoding="utf-8")
+        stdout_text = (proc.stdout or "").strip()
+        stderr_text = (proc.stderr or "").strip()
+        combined_text = "\n".join([t for t in [stdout_text, stderr_text] if t]).strip()
+        result_file.write_text(combined_text + ("\n" if combined_text else ""), encoding="utf-8")
 
-        first_line = output_text.splitlines()[0].strip() if output_text else "no-result"
-        if first_line not in {"sat", "unsat", "unknown"}:
-            first_line = "unknown"
+        match = re.search(r"^(sat|unsat|unknown)$", combined_text, flags=re.MULTILINE)
+        if match:
+            solver_result = match.group(1)
+            note = ""
+        elif "error" in combined_text.lower():
+            solver_result = "error"
+            note = "z3_error_output_present"
+        else:
+            solver_result = "unknown"
+            note = "no_sat_unsat_unknown_token_found"
 
-        masking_status = classify_masking_from_solver_result(first_line)
-        status_lines.append(f"{idx},{smt2_file.name},{first_line},{masking_status}")
+        masking_status = classify_masking_from_solver_result(solver_result)
+        status_lines.append(
+            f"{idx},{smt2_file.name},{solver_result},{masking_status},{note}"
+        )
 
     status_path = out_dir / "bug_masking_status.csv"
     status_path.write_text("\n".join(status_lines) + "\n", encoding="utf-8")
