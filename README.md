@@ -121,11 +121,13 @@ source .venv/bin/activate
 ### 3) Install the utility in editable mode
 
 ```bash
+pip install -r requirements.txt
 pip install -e .
 ```
 
 Notes:
-- `requirements.txt` has no external dependency requirement (standard library only).
+- `requirements.txt` contains minimal packaging dependency (`setuptools`).
+- The analyzer runtime logic itself uses Python standard library modules.
 - Editable install lets you update utility code without reinstalling each time.
 
 ### 4) Quick installation check
