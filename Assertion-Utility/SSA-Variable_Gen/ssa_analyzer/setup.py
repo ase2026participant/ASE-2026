@@ -1,16 +1,23 @@
 """Setup configuration for SSA Analyzer package."""
 
+from pathlib import Path
 from setuptools import setup, find_packages
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+README_PATH = Path(__file__).with_name("README.md")
+DEFAULT_DESCRIPTION = "A utility for analyzing SSA versions of important variables in C source code"
+
+if README_PATH.exists():
+    long_description = README_PATH.read_text(encoding="utf-8")
+else:
+    # Allow installation in environments where README.md is not shipped.
+    long_description = DEFAULT_DESCRIPTION
 
 setup(
     name="ssa-analyzer",
     version="0.1.0",
     author="Your Name",
     author_email="redacted_email",
-    description="A utility for analyzing SSA versions of important variables in C source code",
+    description=DEFAULT_DESCRIPTION,
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/ssa-analyzer",
