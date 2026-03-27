@@ -149,6 +149,166 @@ If this command prints analysis output (or writes output when a file path is giv
 
 ---
 
+## Detailed Workflow: Identify Masking Bug from `tcas_v15.c`
+
+This section gives a complete command-level flow to:
+- generate SMT2 from `tcas_v15.c`,
+- generate assertion candidates using the SSA utility,
+- create one SMT2 copy per assertion,
+- insert each assertion into the correct SMT2 location,
+- run Z3 per assertion and record `sat`/`unsat`.
+
+### Reviewer quick run (copy/paste)
+
+If you are evaluating the artifact and want a direct runnable sequence:
+
+```bash
+cd "/path/to/ASE-2026"
+
+# 1) Generate base SMT2
+cbmc TCAS/Driver_Programs/Original/tcas_v15.c --smt2 --unwind 5 --outfile out.tcas_v15.smt2
+
+# 2) Run SSA/assertion utility
+cd Assertion-Utility/SSA-Variable_Gen
+./ssa_analyzer/run_rda_smt2.sh Original/tcas_v15.c smt2_files/out.tcas_v15.smt2 ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt
+
+# 3) Generate one SMT2 variant per assertion
+cd "/path/to/ASE-2026"
+python3 Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/generate_assertion_smt2_variants.py \
+  --base-smt2 out.tcas_v15.smt2 \
+  --assertions-file TCAS/Driver_Programs/SMT_Files/TCAS_Multibug_Assertions.txt \
+  --output-dir tcas_v15_assertion_runs \
+  --prefix out.tcas_v15.assert
+
+# 4) Run all variants with Z3 and store solver outputs
+cd tcas_v15_assertion_runs
+for f in out.tcas_v15.assert*.smt2; do
+  z3 "$f" > "${f%.smt2}.result.txt"
+done
+```
+
+### Step 1) Generate base SMT2 with CBMC
+
+From repo root:
+
+```bash
+cd "/path/to/ASE-2026"
+cbmc TCAS/Driver_Programs/Original/tcas_v15.c --smt2 --unwind 5 --outfile out.tcas_v15.smt2
+```
+
+This creates a baseline file: `out.tcas_v15.smt2`.
+If you want to skip regeneration and use the shipped SMT2 artifact, use:
+`TCAS/Driver_Programs/SMT_Files/out.tcas_v15.smt2` as `--base-smt2` in Step 3.
+
+### Step 2) Run assertion generation utility (SSA + SMT2 mapping)
+
+```bash
+cd Assertion-Utility/SSA-Variable_Gen
+./ssa_analyzer/run_rda_smt2.sh Original/tcas_v15.c smt2_files/out.tcas_v15.smt2 ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt
+```
+
+Use:
+- `ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt` (generated predicate/SSA hints)
+- `TCAS/Driver_Programs/SMT_Files/TCAS_Multibug_Assertions.txt` (assertion templates/examples)
+
+### Step 3) Auto-generate one SMT2 copy per assertion
+
+Use the helper script (added in this artifact) to:
+- extract all `(assert ...)` blocks from an assertions source file,
+- create one SMT2 variant per assertion,
+- insert each assertion before `(check-sat)` automatically.
+
+```bash
+cd "/path/to/ASE-2026"
+python3 Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/generate_assertion_smt2_variants.py \
+  --base-smt2 out.tcas_v15.smt2 \
+  --assertions-file TCAS/Driver_Programs/SMT_Files/TCAS_Multibug_Assertions.txt \
+  --output-dir tcas_v15_assertion_runs \
+  --prefix out.tcas_v15.assert
+```
+
+Generated outputs:
+- `tcas_v15_assertion_runs/out.tcas_v15.assert1.smt2`
+- `tcas_v15_assertion_runs/out.tcas_v15.assert2.smt2`
+- ...
+- `tcas_v15_assertion_runs/manifest.csv` (index -> file mapping + assertion preview)
+
+`manifest.csv` is the reviewer-facing index for reproducibility:
+- `index`: assertion sequence number used in generated file names,
+- `file`: SMT2 variant file generated for that assertion,
+- `assertion_preview`: first part of inserted assertion for quick mapping.
+
+### Step 4) (Optional) Manual assertion file format
+
+If you want full control, create your own assertions file containing pure SMT2 blocks:
+
+```smt2
+(assert (=> 
+  (not (= |predicate_src_ssa| |predicate_mut_ssa|))
+  (not (= |final_src_ssa| |final_mut_ssa|))
+))
+
+(assert (not (= |predicate_src_ssa| |predicate_mut_ssa|)))
+```
+
+Then pass that file as `--assertions-file`.
+
+### Step 5) Ensure solver query lines
+
+The script preserves existing `(check-sat)` and inserts assertions before it.
+If your base SMT2 has no `(check-sat)`, the script appends one automatically.
+
+Optional for model extraction in SAT cases, append to individual files:
+
+```smt2
+(get-model)
+```
+
+### Step 6) Run Z3 on each SMT2 copy
+
+```bash
+cd "/path/to/ASE-2026/tcas_v15_assertion_runs"
+for f in out.tcas_v15.assert*.smt2; do
+  echo "=== $f ==="
+  z3 "$f" | tee "${f%.smt2}.result.txt"
+done
+```
+
+### Step 7) Summarize `sat`/`unsat` results
+
+```bash
+cd "/path/to/ASE-2026/tcas_v15_assertion_runs"
+for r in *.result.txt; do
+  printf "%s: " "$r"
+  rg "^(sat|unsat|unknown)$" "$r" -m 1 || echo "no-result"
+done
+```
+
+Interpretation:
+- `sat`: assertion constraints are satisfiable (witness exists under current encoding/unwind).
+- `unsat`: assertion constraints are inconsistent for that encoding/unwind.
+- `unknown`: solver could not decide with current constraints/settings.
+
+Optional CSV summary for paper tables:
+
+```bash
+cd "/path/to/ASE-2026/tcas_v15_assertion_runs"
+printf "file,result\n" > z3_summary.csv
+for r in *.result.txt; do
+  res=$(rg "^(sat|unsat|unknown)$" "$r" -m 1 | tr -d '\n')
+  [ -z "$res" ] && res="no-result"
+  printf "%s,%s\n" "$r" "$res" >> z3_summary.csv
+done
+```
+
+### Troubleshooting notes (reviewers)
+
+- If Step 3 says base SMT2 not found, confirm you generated `out.tcas_v15.smt2` in repo root (Step 1), or use the shipped file path in `TCAS/Driver_Programs/SMT_Files/`.
+- If `cbmc`/`z3` commands are not found, install prerequisites from the `Prerequisites` section.
+- If no assertion variants are generated, verify the assertions source file contains valid balanced `(assert ...)` blocks.
+
+---
+
 ## NTS: CBMC Verification Command (main/test_driver)
 
 Use this template:
