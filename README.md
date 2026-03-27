@@ -338,6 +338,39 @@ cat bug_masking_status.csv
 - If Step 3 says base SMT2 not found, confirm you generated `out.tcas_v15.smt2` in repo root (Step 1), or use the shipped file path in `TCAS/Driver_Programs/SMT_Files/`.
 - If `cbmc`/`z3` commands are not found, install prerequisites from the `Prerequisites` section.
 - If no assertion variants are generated, verify the assertions source file contains valid balanced `(assert ...)` blocks.
+- If `bug_masking_status.csv` shows all `unknown`, run Z3 in SMT2 mode and capture stderr (some setups print parser/solver messages to stderr):
+
+```bash
+cd "/path/to/ASE-2026/tcas_v15_assertion_runs"
+for f in out.tcas_v15.assert*.smt2; do
+  z3 -smt2 "$f" > "${f%.smt2}.result.txt" 2>&1
+done
+```
+
+Then rebuild bug-wise status from these result files:
+
+```bash
+cd "/path/to/ASE-2026/tcas_v15_assertion_runs"
+printf "bug_index,file,solver_result,masking_status\n" > bug_masking_status.csv
+i=1
+for r in out.tcas_v15.assert*.result.txt; do
+  [ -e "$r" ] || continue
+  solver=$(grep -E '^(sat|unsat|unknown)$' "$r" | head -n 1)
+  [ -z "$solver" ] && solver="unknown"
+
+  if [ "$solver" = "unsat" ]; then
+    status="masked"
+  elif [ "$solver" = "sat" ]; then
+    status="unmasked"
+  else
+    status="inconclusive"
+  fi
+
+  smt="${r%.result.txt}.smt2"
+  printf "%s,%s,%s,%s\n" "$i" "$(basename "$smt")" "$solver" "$status" >> bug_masking_status.csv
+  i=$((i+1))
+done
+```
 
 ---
 
