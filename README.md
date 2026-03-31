@@ -168,7 +168,7 @@ Compare source and mutant programs for observational equivalence.
 Return structured output only.
 ```
 
-### Full Prompt Template (JSON-first masking analysis)
+### Prompt Template (JSON-first masking analysis)
 
 Use this stricter prompt pair when you want machine-parseable output and explicit masking/interaction reasoning for multi-bug comparisons.
 
