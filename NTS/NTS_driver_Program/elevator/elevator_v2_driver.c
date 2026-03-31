@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
 
-#define NFLOORS     10
-#define MAX_RIDERS  20
+#define NFLOORS     5
+#define MAX_RIDERS  10
 #define MAXINT      100007
 
 int stops_1[MAX_RIDERS + 1];
@@ -21,7 +21,7 @@ int min_1(int a, int b) {
 }
 
 int min_2(int a, int b) {
-    return (a < b) ? a : a; // Faulty
+    return (a < b) ? a : a; 
 }
 
 int floors_walked_1(int prev, int curr) {

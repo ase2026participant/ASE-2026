@@ -21,7 +21,7 @@ int min_1(int a, int b) {
 }
 
 int min_2(int a, int b) {
-    return (a < b) ? b : b; // Faulty
+    return (a < b) ? b : b; 
 }
 
 int floors_walked_1(int prev, int curr) {

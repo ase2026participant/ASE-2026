@@ -21,7 +21,7 @@ int min_1(int a, int b) {
 }
 
 int min_2(int a, int b) {
-    return (a < b) ? a : b; // Faulty
+    return (a < b) ? a : b; 
 }
 
 int floors_walked_1(int prev, int curr) {
@@ -79,7 +79,7 @@ int optimize_floors_2() {
 
     int laststop = 0;
     for (int i = 1; i <= NFLOORS; i++)
-        if (m_2[i][nstops] <= m_2[laststop][nstops])
+        if (m_2[i][nstops] > m_2[laststop][nstops])
             laststop = i;
     return laststop;
 }

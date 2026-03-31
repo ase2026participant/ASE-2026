@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
 
-#define NFLOORS     10
-#define MAX_RIDERS  20
+#define NFLOORS     5
+#define MAX_RIDERS  10
 #define MAXINT      100007
 
 int stops_1[MAX_RIDERS + 1];
