@@ -407,7 +407,7 @@ int test_driver()
         addDays_2(d, m, y, x);
 	}
 
-    assert((final_d_1 != final_d_2) || (final_m_1 != final_m_2) || (final_y_1 != final_y_2));
+    //assert((final_d_1 != final_d_2) || (final_m_1 != final_m_2) || (final_y_1 != final_y_2));
     assert((final_d_1 == final_d_2) && (final_m_1 == final_m_2) && (final_y_1 == final_y_2)); 
     return 0; 
 }

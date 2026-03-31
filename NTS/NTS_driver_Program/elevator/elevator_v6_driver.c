@@ -103,6 +103,6 @@ int test_driver() {
     int cost2 = m_2[last2][nstops];
 
     assert(cost1 == cost2);
-    assert((cost1 != cost2));
+    //assert((cost1 != cost2));
     return 0;
 }

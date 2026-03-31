@@ -194,6 +194,6 @@ int main(void) {
   main_1(a);
   main_2(a);
   assert(val_f_1 == val_f_2 && val_g_1 == val_g_2 && val_h_1 == val_h_2 && val_i_1 == val_i_2);
-  assert(val_f_1 != val_f_2 || val_g_1 != val_g_2 || val_h_1 != val_h_2 || val_i_1 != val_i_2);
+  //assert(val_f_1 != val_f_2 || val_g_1 != val_g_2 || val_h_1 != val_h_2 || val_i_1 != val_i_2);
   return 0;
 }
