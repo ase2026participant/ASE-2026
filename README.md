@@ -117,7 +117,7 @@ Result interpretation (`bug_masking_status.csv`):
 - `solver_result = unsat` -> `masking_status = masked`
 - `solver_result = unknown` or `error` -> `masking_status = inconclusive`
 
-## CoT Prompts (Used in LLM Notebooks)
+## 3. CoT Prompts (Used in LLM Notebooks)
 
 The primary prompt used for reported paper results is the main prompt described in the paper.
 The CoT prompting setup below is an additional, optional analysis layer provided for deeper behavioral diagnosis.
