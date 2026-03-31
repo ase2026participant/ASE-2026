@@ -41,7 +41,87 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
+## 1. Single-bug Localization (NTS)
+
+### Steps
+1. Pick one NTS driver program from `NTS/NTS_driver_Program/`.
+2. Run CBMC on the product driver with bounded unwind and slicing flags.
+3. Inspect assertion results to identify whether source/mutant localization condition is satisfied.
+
+### One example execution using NTS
+```bash
+cbmc NTS/NTS_driver_Program/problem_1/Problem1_v2_driver.c \
+  --function main \
+  --unwind 10 \
+  --no-unwinding-assertions \
+  --slice-formula \
+  --reachability-slice
+```
+
+## 2. Multiple-bug Localization (TCAS)
+
+Important scope note:
+- The assertion utility workflow in this artifact is intended for **multi-bug mutants in TCAS only**.
+- It is not intended as a generic workflow for NTS benchmarks or single-bug mutant pipelines.
+
+### 2.a) Steps
+1. Generate SMT2 from TCAS source (`tcas_v15.c`).
+2. Run SSA/analysis utility to produce analysis output for assertion selection.
+3. Generate one assertion-specific SMT2 per bug and solve each using Z3.
+4. Collect per-bug masking/localization result from `bug_masking_status.csv`.
+
+### 2.b) One example execution using TCAS
+```bash
+cbmc TCAS/Driver_Programs/Original/tcas_v15.c --smt2 --unwind 5 --outfile out.tcas_v15.smt2
+```
+
+The CBMC command above generates the bounded SMT2 model for TCAS v15, which is the input for downstream SSA/RDA and per-assertion analysis.
+The next utility command produces `analysis_tcas_v15_rda_smt2.txt`, used to map assertions to bug-relevant syntactic changes.
+
+```bash
+cd Assertion-Utility/SSA-Variable_Gen
+./ssa_analyzer/run_rda_smt2.sh Original/tcas_v15.c smt2_files/out.tcas_v15.smt2 ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt
+```
+
+The `generate_assertion_smt2_variants.py` command below is associated with analysis of all syntactic changes corresponding to the respective multi-bug mutant.
+It generates assertion-specific SMT2 variants so each syntactic change/bug condition can be checked independently and then summarized jointly.
+The resulting per-assertion Z3 outcomes provide bug-wise masking/localization evidence for the full multi-bug mutant.
+
+```bash
+cd "/path/to/ASE-2026"
+python3 Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/generate_assertion_smt2_variants.py \
+  --base-smt2 out.tcas_v15.smt2 \
+  --assertions-file TCAS/Driver_Programs/SMT_Files/TCAS_Multibug_Assertions.txt \
+  --analysis-file Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt \
+  --output-dir tcas_v15_assertion_runs \
+  --prefix out.tcas_v15.assert \
+  --run-z3
+```
+
+### 2.c) Running all the test cases
+Use the same pipeline for all available TCAS multi-bug cases by repeating the steps above per target driver/SMT2 pair.
+For each run, verify the generated outputs and aggregate bug status:
+
+- `tcas_v15_assertion_runs/manifest.csv`
+- `tcas_v15_assertion_runs/bug_masking_status.csv`
+
+Quick checks:
+```bash
+cat tcas_v15_assertion_runs/bug_masking_status.csv
+grep ",masked," tcas_v15_assertion_runs/bug_masking_status.csv
+grep ",unmasked," tcas_v15_assertion_runs/bug_masking_status.csv
+```
+
+Result interpretation (`bug_masking_status.csv`):
+- `solver_result = sat` -> `masking_status = unmasked`
+- `solver_result = unsat` -> `masking_status = masked`
+- `solver_result = unknown` or `error` -> `masking_status = inconclusive`
+
 ## CoT Prompts (Used in LLM Notebooks)
+
+The primary prompt used for reported paper results is the main prompt described in the paper.
+The CoT prompting setup below is an additional, optional analysis layer provided for deeper behavioral diagnosis.
+It is intended as a good-to-have extension for qualitative reasoning about masking and bug interactions.
 
 The notebooks in `LLM Analysis/Notebook/` use Chain-of-Thought (CoT) style prompting for semantic equivalence and masking-bug reasoning.
 
@@ -196,77 +276,3 @@ Usage note:
 - In notebooks, inject program text using Python f-strings exactly as `{source}` and `{mutant}` placeholders.
 - Keep temperature low (`0` to `0.2`) to improve consistency of strict JSON output.
 
-## Example Execution: NTS
-
-```bash
-cbmc NTS/NTS_driver_Program/problem_1/Problem1_v2_driver.c \
-  --function main \
-  --unwind 10 \
-  --no-unwinding-assertions \
-  --slice-formula \
-  --reachability-slice
-```
-
-## Example Execution: TCAS v15 (SMT2 generation)
-
-```bash
-cbmc TCAS/Driver_Programs/Original/tcas_v15.c --smt2 --unwind 5 --outfile out.tcas_v15.smt2
-```
-
-## Example Execution: Assertion Generation Utility
-
-Important scope note:
-- The assertion utility workflow in this artifact is intended for **multi-bug mutants in TCAS only**.
-- It is not intended as a generic workflow for NTS benchmarks or single-bug mutant pipelines.
-
-```bash
-cd Assertion-Utility/SSA-Variable_Gen
-./ssa_analyzer/run_rda_smt2.sh Original/tcas_v15.c smt2_files/out.tcas_v15.smt2 ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt
-```
-
-## Example Execution: Per-Bug Masking Classification
-
-This workflow does the following automatically:
-1. Reads a base SMT2 model for `tcas_v15`.
-2. Reads candidate `(assert ...)` blocks from `TCAS_Multibug_Assertions.txt`.
-3. Uses analysis output (`analysis_tcas_v15_rda_smt2.txt`) to infer bug count.
-4. Generates one SMT2 variant per bug (instead of all assertion blocks).
-5. Runs Z3 on each generated variant and writes a per-bug masking status table.
-
-```bash
-cd "/path/to/ASE-2026"
-python3 Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/generate_assertion_smt2_variants.py \
-  --base-smt2 out.tcas_v15.smt2 \
-  --assertions-file TCAS/Driver_Programs/SMT_Files/TCAS_Multibug_Assertions.txt \
-  --analysis-file Assertion-Utility/SSA-Variable_Gen/ssa_analyzer/results/analysis_tcas_v15_rda_smt2.txt \
-  --output-dir tcas_v15_assertion_runs \
-  --prefix out.tcas_v15.assert \
-  --run-z3
-```
-
-Expected generated files in `tcas_v15_assertion_runs/`:
-- `out.tcas_v15.assert1.smt2`, `out.tcas_v15.assert2.smt2`, ...
-- `out.tcas_v15.assert1.result.txt`, `out.tcas_v15.assert2.result.txt`, ...
-- `manifest.csv` (generated assertion index/file mapping)
-- `bug_masking_status.csv` (final per-bug classification)
-
-View bug-wise masking output:
-
-```bash
-cat tcas_v15_assertion_runs/bug_masking_status.csv
-```
-
-Result interpretation (`bug_masking_status.csv`):
-- `solver_result = sat` -> `masking_status = unmasked`
-- `solver_result = unsat` -> `masking_status = masked`
-- `solver_result = unknown` or `error` -> `masking_status = inconclusive`
-
-Quick filter examples:
-
-```bash
-# Show masked bug rows only
-grep ",masked," tcas_v15_assertion_runs/bug_masking_status.csv
-
-# Show unmasked bug rows only
-grep ",unmasked," tcas_v15_assertion_runs/bug_masking_status.csv
-```
