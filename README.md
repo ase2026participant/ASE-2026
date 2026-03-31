@@ -123,8 +123,6 @@ The primary prompt used for reported paper results is the main prompt described 
 The CoT prompting setup below is an additional, optional analysis layer provided for deeper behavioral diagnosis.
 It is intended as a good-to-have extension for qualitative reasoning about masking and bug interactions.
 
-The notebooks in `LLM Analysis/Notebook/` use Chain-of-Thought (CoT) style prompting for semantic equivalence and masking-bug reasoning.
-
 ### CoT System Prompt (summary)
 
 - Role: expert in program analysis and formal verification.
