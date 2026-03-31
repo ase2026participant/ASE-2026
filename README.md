@@ -15,6 +15,17 @@ For full documentation, see `DETAILED_READ_ME`.
 
 ## Prerequisites
 
+### Get the artifact code
+Option 1 (recommended):
+```bash
+git clone https://github.com/ase2026participant/ASE-2026.git
+cd ASE-2026
+```
+
+Option 2:
+- Download ZIP from the GitHub repository page and extract it locally.
+- Open a terminal in the extracted `ASE-2026` folder before running commands below.
+
 ### Languages and runtime
 - Python: `3.9+` (recommended)
 - Shell: `bash` or `zsh` (commands are shell-based)
