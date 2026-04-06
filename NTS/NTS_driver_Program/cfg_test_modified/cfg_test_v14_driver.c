@@ -189,7 +189,7 @@ int main(void) {
   int a;
 
     // Safe range for square without overflow: [-46340, 46340]
-    __CPROVER_assume(a >= -100 && a <= 100);
+    __CPROVER_assume(a >= -100 && a <= 101);
 
   main_1(a);
   main_2(a);
